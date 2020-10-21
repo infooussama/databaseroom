@@ -4,17 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.util.List;
+
 @Entity
 public class LigneDB {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "idLigne")
-    private int idLigne;
-
-   // @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "lid")
+    @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "lid")
     private String lid ;
 
     @ColumnInfo(name="ltype")
@@ -41,6 +41,9 @@ public class LigneDB {
     @ColumnInfo(name="op_color")
     private String op_color;
 
+    @Ignore
+    private List<FullStation> fullStations;
+
     public LigneDB(@NonNull String lid, String ltype, String operator_id, int lnum, String lname, int nbs, String op_id, String op_name, String op_color) {
         this.lid = lid;
         this.ltype = ltype;
@@ -51,14 +54,6 @@ public class LigneDB {
         this.op_id = op_id;
         this.op_name = op_name;
         this.op_color = op_color;
-    }
-
-    public int getIdLigne() {
-        return idLigne;
-    }
-
-    public void setIdLigne(int idLigne) {
-        this.idLigne = idLigne;
     }
 
     @NonNull
@@ -132,5 +127,13 @@ public class LigneDB {
 
     public void setOp_color(String op_color) {
         this.op_color = op_color;
+    }
+
+    public List<FullStation> getFullStations() {
+        return fullStations;
+    }
+
+    public void setFullStations(List<FullStation> fullStations) {
+        this.fullStations = fullStations;
     }
 }

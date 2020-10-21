@@ -1,8 +1,6 @@
 package com.example.relationbdd.dao;
 
-import com.example.relationbdd.model.LigneAndFullStation;
 import com.example.relationbdd.model.LigneDB;
-import com.example.relationbdd.model.LigneWithFullStation;
 
 import java.util.List;
 
@@ -10,15 +8,14 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
-import static androidx.room.OnConflictStrategy.ABORT;
 import static androidx.room.OnConflictStrategy.IGNORE;
+import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface LigneDao {
 
-    @Insert(onConflict = IGNORE)
+    @Insert(onConflict = REPLACE)
     void insert(LigneDB ligneDB);
 
     @Delete
@@ -26,10 +23,8 @@ public interface LigneDao {
 
     @Query("SELECT * FROM LigneDB")
     List<LigneDB> getLigneDbs();
-/*
-    @Transaction
-    @Query("SELECT * FROM LigneDB")
-    public List<LigneWithFullStation> getLigneWithFullStations();
 
-*/
+    @Query("SELECT * FROM LigneDB INNER JOIN FullStationLigneDBCrossRef ON LigneDB.lid = FullStationLigneDBCrossRef.lid WHERE FullStationLigneDBCrossRef.scode=:scode")
+    public List<LigneDB> getFullStationLignes(String scode);
+
 }

@@ -1,7 +1,6 @@
 package com.example.relationbdd.dao;
 
 import com.example.relationbdd.model.FullStation;
-import com.example.relationbdd.model.FullStationWithLigne;
 import com.example.relationbdd.model.TransfertAndFullStation;
 
 import java.util.List;
@@ -29,9 +28,7 @@ public interface FullStationDao {
     @Query("SELECT * FROM FullStation")
     public List<TransfertAndFullStation> getStationWithTransfert();
 
-    @Transaction
-    @Query("SELECT * FROM FullStation")
-    public List<FullStationWithLigne> getFullStationWithLignes();
-
+    @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid")
+    public List<FullStation> getLineFullstations(String lid);
 
 }

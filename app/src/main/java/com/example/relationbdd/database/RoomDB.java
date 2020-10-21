@@ -3,12 +3,12 @@ package com.example.relationbdd.database;
 import android.content.Context;
 
 import com.example.relationbdd.dao.FullStationDao;
-import com.example.relationbdd.dao.LigneAndFullStationDao;
+import com.example.relationbdd.dao.FullStationLigneDBCrossRefDao;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.dao.StationDao;
 import com.example.relationbdd.dao.TransfertDao;
 import com.example.relationbdd.model.FullStation;
-import com.example.relationbdd.model.LigneAndFullStation;
+import com.example.relationbdd.model.FullStationLigneDBCrossRef;
 import com.example.relationbdd.model.LigneDB;
 import com.example.relationbdd.model.StationDB;
 import com.example.relationbdd.model.TransfertDB;
@@ -18,15 +18,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {StationDB.class, FullStation.class, TransfertDB.class, LigneDB.class, LigneAndFullStation.class},version = 4)
+@Database(entities = {StationDB.class, FullStation.class, TransfertDB.class, LigneDB.class, FullStationLigneDBCrossRef.class},version = 8)
 public abstract class RoomDB extends RoomDatabase {
 
     public abstract StationDao stationDao();
     public abstract FullStationDao fullStationDao();
     public abstract TransfertDao transfertDao();
     public abstract LigneDao ligneDao();
-    public abstract LigneAndFullStationDao ligneAndFullStationDao();
-
+    public abstract FullStationLigneDBCrossRefDao fullStationLigneDBCrossRefDao();
 
     private static RoomDB database;
     private static String DATABASE_NAME = "database";

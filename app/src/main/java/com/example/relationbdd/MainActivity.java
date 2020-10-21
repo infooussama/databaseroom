@@ -7,17 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
-import com.example.relationbdd.JsonData.Transfert;
 import com.example.relationbdd.dao.FullStationDao;
-import com.example.relationbdd.dao.LigneAndFullStationDao;
+import com.example.relationbdd.dao.FullStationLigneDBCrossRefDao;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.dao.TransfertDao;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.FullStation;
-import com.example.relationbdd.model.FullStationWithLigne;
-import com.example.relationbdd.model.LigneAndFullStation;
+import com.example.relationbdd.model.FullStationLigneDBCrossRef;
 import com.example.relationbdd.model.LigneDB;
-import com.example.relationbdd.model.LigneWithFullStation;
 import com.example.relationbdd.model.StationDB;
 import com.example.relationbdd.model.TransfertAndFullStation;
 import com.example.relationbdd.model.TransfertDB;
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         FullStationDao dao = RoomDB.getInstance(this).fullStationDao();
         TransfertDao dao1 = RoomDB.getInstance(this).transfertDao();
         LigneDao dao2 = RoomDB.getInstance(this).ligneDao();
-        LigneAndFullStationDao dao3 = RoomDB.getInstance(this).ligneAndFullStationDao();
         dao2.insert(new LigneDB("E160707B","B","E",707,"Chevalley - Plateau - Ain Benian",
                 11,"E","ETUSA","skyblue"));
         dao2.insert(new LigneDB("E160707C","B","E",708,"Chevalley - Plateau - Ain Benian",
@@ -59,14 +55,17 @@ public class MainActivity extends AppCompatActivity {
         dao1.insert(new TransfertDB("16ABN138B",106));
         dao1.insert(new TransfertDB("16ABN138B",200));
 
+        FullStationLigneDBCrossRefDao fullStationLigneDBCrossRefDao = RoomDB.getInstance(this).fullStationLigneDBCrossRefDao();
+        fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef("16ABNAGCB", "E160707B"));
+        fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef("16ABNAGCB", "E160707D"));
+
         List<TransfertAndFullStation> kezai = dao.getStationWithTransfert();
 
-        List<FullStationWithLigne> a = dao.getFullStationWithLignes();
-
-
        // Log.e("kezaikebch",""+kezai.size());
-        Log.e("kezaikebch",""+kezai.get(0).transfertDBList.size());
-        Log.e("kezaikebchBzfffffffff"," "+a.get(0).ligneDBS.size());
+        Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());
+
+
+        Log.e("List Child ",""+dao2.getFullStationLignes("16ABNAGCB").get(0).getLname());
 
     }
 

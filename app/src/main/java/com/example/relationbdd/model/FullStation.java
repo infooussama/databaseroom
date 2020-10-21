@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.util.List;
 
 @Entity
 public class FullStation {
@@ -25,6 +28,9 @@ public class FullStation {
 
     @Embedded
     private StationDB stationDB;
+
+    @Ignore
+    private List<LigneDB> ligneDBS;
 
     public FullStation(@NonNull String scode, double stop_lat, double stop_lon, String post_name, StationDB stationDB) {
         this.scode = scode;
@@ -73,5 +79,13 @@ public class FullStation {
 
     public void setStationDB(StationDB stationDB) {
         this.stationDB = stationDB;
+    }
+
+    public List<LigneDB> getLigneDBS() {
+        return ligneDBS;
+    }
+
+    public void setLigneDBS(List<LigneDB> ligneDBS) {
+        this.ligneDBS = ligneDBS;
     }
 }
