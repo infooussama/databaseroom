@@ -24,7 +24,7 @@ public class LigneDB {
     private String operator_id;
 
     @ColumnInfo(name="lnum")
-    private int lnum;
+    private String lnum;
 
     @ColumnInfo(name="lname")
     private String lname;
@@ -44,7 +44,7 @@ public class LigneDB {
     @Ignore
     private List<FullStation> fullStations;
 
-    public LigneDB(@NonNull String lid, String ltype, String operator_id, int lnum, String lname, int nbs, String op_id, String op_name, String op_color) {
+    public LigneDB(@NonNull String lid, String ltype, String operator_id, String lnum, String lname, int nbs, String op_id, String op_name, String op_color) {
         this.lid = lid;
         this.ltype = ltype;
         this.operator_id = operator_id;
@@ -81,11 +81,11 @@ public class LigneDB {
         this.operator_id = operator_id;
     }
 
-    public int getLnum() {
+    public String getLnum() {
         return lnum;
     }
 
-    public void setLnum(int lnum) {
+    public void setLnum(String lnum) {
         this.lnum = lnum;
     }
 

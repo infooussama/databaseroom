@@ -15,7 +15,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface LigneDao {
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     void insert(LigneDB ligneDB);
 
     @Delete
