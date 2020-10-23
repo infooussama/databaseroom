@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/itineraires"
+        android:title="Itinéraires"
+        android:icon="@drawable/itineraires_on"
+        app:cnb_iconColor="#ffffff"
+        app:cnb_textColor="#ffffff"
+        app:cnb_backgroundColor="#FF9800"/>
+
+    <item
+        android:id="@+id/stations"
+        android:title="Stations"
+        android:icon="@drawable/stations_on"
+        app:cnb_iconColor="#ffffff"
+        app:cnb_textColor="#ffffff"
+        app:cnb_backgroundColor="#FF9800"/>
+
+
+    <item
+        android:id="@+id/lignes"
+        android:title="Lignes"
+        android:icon="@drawable/lignes_on"
+        app:cnb_iconColor="#ffffff"
+        app:cnb_textColor="#ffffff"
+        app:cnb_backgroundColor="#FF9800"/>
+    
+</menu>

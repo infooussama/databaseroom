@@ -24,11 +24,15 @@ public interface FullStationDao {
     @Query("SELECT * FROM FullStation")
     List<FullStation> getAllStations();
 
+    @Query("SELECT * FROM [FullStation] WHERE stype =:bus")
+    public List<FullStation> getFullStationsBus(String bus);
+
     @Transaction
     @Query("SELECT * FROM FullStation")
     public List<TransfertAndFullStation> getStationWithTransfert();
 
     @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid")
     public List<FullStation> getLineFullstations(String lid);
+
 
 }

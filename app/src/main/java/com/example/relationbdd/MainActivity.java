@@ -1,6 +1,7 @@
 package com.example.relationbdd;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import com.example.relationbdd.dao.FullStationLigneDBCrossRefDao;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.dao.TransfertDao;
 import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.fragment.FullStationFragment;
+import com.example.relationbdd.fragment.ItineraireFragment;
+import com.example.relationbdd.fragment.LigneFragment;
 import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.FullStationLigneDBCrossRef;
 import com.example.relationbdd.model.LigneDB;
@@ -20,6 +24,7 @@ import com.example.relationbdd.model.StationDB;
 import com.example.relationbdd.model.TransfertAndFullStation;
 import com.example.relationbdd.model.TransfertDB;
 import com.google.gson.Gson;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,18 +45,21 @@ public class MainActivity extends AppCompatActivity {
     LigneDao ligneDao;
     FullStationLigneDBCrossRefDao fullStationLigneDBCrossRefDao;
     boolean check = true;
+    private ChipNavigationBar chipNavigationBar;
+    private Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-
+        initFragments();
         if(check){
             insertFullStation();
-            insertLigneAndCrossRef();
+            //insertLigneAndCrossRef();
             insertTransfert();
             check = false;
         }
+
 
         List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16ABN138B");
         List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
@@ -74,6 +82,33 @@ public class MainActivity extends AppCompatActivity {
         fullStationLigneDBCrossRefDao = roomDB.fullStationLigneDBCrossRefDao();
         fullData = fillWithStartingData(this);
         stationData = fillWithStartingData2(this);
+        chipNavigationBar = findViewById(R.id.chipNavigation);
+        chipNavigationBar.setItemSelected(R.id.itineraires,true);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new ItineraireFragment()).commit();
+    }
+
+    public void initFragments(){
+
+        chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int i) {
+                switch (i){
+                    case R.id.itineraires:
+                        fragment = new ItineraireFragment();
+                        break;
+                    case R.id.stations:
+                        fragment = new FullStationFragment();
+                        break;
+                    case R.id.lignes:
+                        fragment = new LigneFragment();
+                        break;
+                }
+                if(fragment != null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
+                }
+            }
+        });
+
     }
 
     public void insertFullStation(){
