@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RelationBdd">
+        <activity android:name=".DetailBusStation"></activity>
+        <activity android:name=".DetailTramStation" />
+        <activity android:name=".model.DetailTramStation" />
+        <activity android:name=".DetailMetroStation" />
+        <activity android:name=".model.DetailFullStation" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16ABN138B");
+        /*List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16ABN138B");
         List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
 
         Log.e("FullStationLignes",""+ligneDBS.size());
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
 
-        Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());
+        Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());*/
 
 
     }

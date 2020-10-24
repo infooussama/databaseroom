@@ -1,10 +1,13 @@
 package com.example.relationbdd.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.relationbdd.R;
 import com.example.relationbdd.adapter.MetroListAdapter;
@@ -35,6 +38,8 @@ public class TramTabFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     RoomDB database;
     TramListAdapter adapter;
+    EditText searchView;
+    CharSequence search="";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,6 +81,7 @@ public class TramTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tram_tab, container, false);
+        searchView = view.findViewById(R.id.search_bar);
         recyclerView = view.findViewById(R.id.recycler_view);
         database = RoomDB.getInstance(getActivity());
         dataList = database.fullStationDao().getFullStationsBus("tramway");
@@ -84,6 +90,23 @@ public class TramTabFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new TramListAdapter(getActivity(),dataList);
         recyclerView.setAdapter(adapter);
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+                search = s;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
 
     }
