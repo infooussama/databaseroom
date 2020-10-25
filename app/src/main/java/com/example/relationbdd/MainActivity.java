@@ -55,21 +55,23 @@ public class MainActivity extends AppCompatActivity {
         initFragments();
         if(check){
             insertFullStation();
-            //insertLigneAndCrossRef();
+            insertLigneAndCrossRef();
             insertTransfert();
             check = false;
         }
 
 
-        /*List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16ABN138B");
-        List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
+        List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
+        //List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
+        Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLid());
+        Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
+        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLid());
+        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());
+        //Log.e("LineFullstations",""+fullStations.size());
 
-        Log.e("FullStationLignes",""+ligneDBS.size());
-        Log.e("LineFullstations",""+fullStations.size());
+        //List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
 
-        List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
-
-        Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());*/
+        //Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());
 
 
     }

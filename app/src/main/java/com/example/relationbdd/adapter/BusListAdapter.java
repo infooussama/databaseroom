@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.relationbdd.DetailBusStation;
 import com.example.relationbdd.DetailTramStation;
 import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
@@ -49,7 +50,8 @@ public class BusListAdapter extends RecyclerView.Adapter<BusListAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context,"ItemClicked"+data.getStationDB().getSname(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context, DetailTramStation.class);
+                Intent intent = new Intent(context, DetailBusStation.class);
+                intent.putExtra("station_code",filtredataList.get(position).getScode());
                 intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
                 intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
                 intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());

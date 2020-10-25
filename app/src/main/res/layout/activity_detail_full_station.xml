@@ -29,7 +29,7 @@
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="300dp"
         mapbox:mapbox_cameraZoom="10"
         mapbox:mapbox_cameraTargetLat="36.752887"
         mapbox:mapbox_cameraTargetLng="3.042048"
@@ -41,4 +41,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#343437"
+        android:text="Destinations au depart de cette station"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:padding="8dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/list_row_main"/>
+
 </LinearLayout>

@@ -52,6 +52,7 @@ public class TramListAdapter extends RecyclerView.Adapter<TramListAdapter.ViewHo
             public void onClick(View v) {
                 //Toast.makeText(context,"ItemClicked"+data.getStationDB().getSname(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, DetailTramStation.class);
+                intent.putExtra("station_code",filtredataList.get(position).getScode());
                 intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
                 intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
                 intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());

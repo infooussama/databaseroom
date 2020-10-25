@@ -2,11 +2,20 @@ package com.example.relationbdd;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.example.relationbdd.adapter.BusListAdapter;
+import com.example.relationbdd.adapter.DetailBusListAdapter;
+import com.example.relationbdd.dao.LigneDao;
+import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.model.FullStation;
+import com.example.relationbdd.model.LigneDB;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
@@ -18,9 +27,17 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DetailBusStation extends AppCompatActivity {
     TextView textView;
     MapView mapView;
+    RecyclerView recyclerView;
+    RoomDB database;
+    DetailBusListAdapter adapter;
+    LinearLayoutManager linearLayoutManager;
+    LigneDao ligneDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +45,20 @@ public class DetailBusStation extends AppCompatActivity {
         setContentView(R.layout.activity_detail_bus_station);
         textView = findViewById(R.id.station_name);
         Intent intent = getIntent();
+        String code = intent.getStringExtra("station_code");
         String name = intent.getStringExtra("station_name");
         double lat = intent.getDoubleExtra("station_lat",0);
         double lon = intent.getDoubleExtra("station_lon",0);
         textView.setText(name);
+        database = RoomDB.getInstance(this);
+        ligneDao = database.ligneDao();
+        List<LigneDB> ligneDBS = ligneDao.getFullStationLignes(code);
+        recyclerView = findViewById(R.id.recycler_view);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        adapter = new DetailBusListAdapter(this,ligneDBS);
 
+        recyclerView.setAdapter(adapter);
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
