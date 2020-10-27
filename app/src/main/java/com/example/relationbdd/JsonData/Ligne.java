@@ -13,6 +13,15 @@ public class Ligne {
     private String  op_id;
     private String  op_name;
     private String  op_color;
+    private Station terminus;
+
+    public Station getStation() {
+        return terminus;
+    }
+
+    public void setStation(Station terminus) {
+        this.terminus = terminus;
+    }
 
     public String getLid() {
         return lid;

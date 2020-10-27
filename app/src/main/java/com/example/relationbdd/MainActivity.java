@@ -60,13 +60,12 @@ public class MainActivity extends AppCompatActivity {
             check = false;
         }
 
-
         List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
         //List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
-        Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLid());
+        /*Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLid());
         Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
         Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLid());
-        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());
+        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());*/
         //Log.e("LineFullstations",""+fullStations.size());
 
         //List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
