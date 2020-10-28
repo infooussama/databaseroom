@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RelationBdd">
-        <activity android:name=".DetailBusStation"></activity>
+        <activity android:name=".CalculeItineraire"></activity>
+        <activity android:name=".ListStation" />
+        <activity android:name=".DetailBusStation" />
         <activity android:name=".DetailTramStation" />
         <activity android:name=".model.DetailTramStation" />
         <activity android:name=".DetailMetroStation" />

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CalculeItineraire">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="#343437">
+
+        <RelativeLayout
+            android:id="@+id/depart"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/card_2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:elevation="8dp"
+            >
+            <TextView
+                android:id="@+id/departtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="Choisissez votre point de depart"
+                android:textSize="17sp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="#00000000"
+                android:src="@drawable/ic_swap" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/destination"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/card_2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/depart"
+            android:elevation="8dp"
+            >
+            <TextView
+                android:id="@+id/destinationtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="Choisissez votre destination"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+        <Button
+            android:id="@+id/search"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/destination"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#e75748"
+            android:text="Recherche"
+            android:textColor="#FFFFFF"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

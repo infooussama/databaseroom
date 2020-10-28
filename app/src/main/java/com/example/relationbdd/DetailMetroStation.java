@@ -75,6 +75,7 @@ public class DetailMetroStation extends AppCompatActivity {
                         mapboxMap.moveCamera(center);
                         mapboxMap.animateCamera(zoom);
                         marker.showInfoWindow(mapboxMap,mapView);
+                        mapboxMap.getUiSettings().setAllGesturesEnabled(false);
                     }
                 });
             }

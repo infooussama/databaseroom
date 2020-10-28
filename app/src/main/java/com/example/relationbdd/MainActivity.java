@@ -2,6 +2,7 @@ package com.example.relationbdd;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -54,13 +55,15 @@ public class MainActivity extends AppCompatActivity {
         init();
         initFragments();
         if(check){
+            fullData = fillWithStartingData(this);
+            stationData = fillWithStartingData2(this);
             insertFullStation();
             insertLigneAndCrossRef();
             insertTransfert();
             check = false;
         }
 
-        List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
+        //List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
         //List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
         /*Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLid());
         Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
@@ -81,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
         transfertDao = roomDB.transfertDao();
         ligneDao = roomDB.ligneDao();
         fullStationLigneDBCrossRefDao = roomDB.fullStationLigneDBCrossRefDao();
-        fullData = fillWithStartingData(this);
-        stationData = fillWithStartingData2(this);
         chipNavigationBar = findViewById(R.id.chipNavigation);
         chipNavigationBar.setItemSelected(R.id.itineraires,true);
         getSupportFragmentManager().beginTransaction().replace(R.id.container,new ItineraireFragment()).commit();
@@ -167,19 +168,19 @@ public class MainActivity extends AppCompatActivity {
                 builder.append(line);
             }
             res = builder.toString();
-            Log.e("res",res);
+            //Log.e("res",res);
         }catch (IOException exception){
             exception.printStackTrace();
-            Log.e("res","2");
+           // Log.e("res","2");
         }
         try {
             Gson g = new Gson();
             p = g.fromJson(res, FullData.class);
-            Log.e("res",""+p.getFull_stations().get(0).getStop_lat());
-            Log.e("data",""+p.getFull_stations().get(0).getLines().get(0).getLid());
+           // Log.e("res",""+p.getFull_stations().get(0).getStop_lat());
+           // Log.e("data",""+p.getFull_stations().get(0).getLines().get(0).getLid());
         }catch (Exception e){
             e.printStackTrace();
-            Log.e("res","4");
+           // Log.e("res","4");
         }
         return p;
 
@@ -196,18 +197,18 @@ public class MainActivity extends AppCompatActivity {
                 builder.append(line);
             }
             res = builder.toString();
-            Log.e("resstationData",res);
+            //Log.e("resstationData",res);
         }catch (IOException exception){
             exception.printStackTrace();
-            Log.e("res","2");
+           // Log.e("res","2");
         }
         try {
             Gson g = new Gson();
             p = g.fromJson(res, StationData.class);
-            Log.e("res",""+p.getStations().get(0).getCid());
+           // Log.e("res",""+p.getStations().get(0).getCid());
         }catch (Exception e){
             e.printStackTrace();
-            Log.e("res","4");
+            //Log.e("res","4");
         }
         return p;
     }
@@ -230,4 +231,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
 }
