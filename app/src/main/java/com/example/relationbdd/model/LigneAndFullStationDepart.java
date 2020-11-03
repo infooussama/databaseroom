@@ -9,8 +9,8 @@ public class LigneAndFullStationDepart {
     @Embedded
     public LigneDB ligneDB;
     @Relation(
-            parentColumn = "lid",
-            entityColumn = "id_depart"
+            parentColumn = "id_depart",
+            entityColumn = "scode"
     )
-    public FullStation fullStation;
+    public List<FullStation> fullStations;
 }

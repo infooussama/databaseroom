@@ -23,6 +23,7 @@ import com.example.relationbdd.fragment.LigneFragment;
 import com.example.relationbdd.model.Distance;
 import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.FullStationLigneDBCrossRef;
+import com.example.relationbdd.model.LigneAndFullStationArriver;
 import com.example.relationbdd.model.LigneAndFullStationDepart;
 import com.example.relationbdd.model.LigneDB;
 import com.example.relationbdd.model.StationDB;
@@ -104,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
             Log.e("kezaikebch2",""+ distance.getScodeA());
         }*/
 
-        List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts();
-        for(LigneAndFullStationDepart distance : ligneAndFullStationDeparts){
-            Log.e("kezaikebch2",""+ distance.ligneDB.getId_depart());
+        List<LigneAndFullStationArriver> LigneAndFullStationArriver = ligneDao.getLigneAndFullStationArrivers("E160003R");
+        for(LigneAndFullStationArriver distance : LigneAndFullStationArriver){
+            Log.e("Hamada Kebcha",""+ distance.fullStations.size());
         }
     }
 
@@ -208,7 +209,8 @@ public class MainActivity extends AppCompatActivity {
                         fullData.getFull_stations().get(i).getLines().get(j).getNbs(),
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_id(),
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_name(),
-                        fullData.getFull_stations().get(i).getLines().get(j).getOp_color()));
+                        fullData.getFull_stations().get(i).getLines().get(j).getOp_color(),
+                        "16ABN138B"));
                 fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef(fullData.getFull_stations().get(i).getScode(),
                         fullData.getFull_stations().get(i).getLines().get(j).getLid()));
             }

@@ -30,11 +30,11 @@ public interface LigneDao {
     public List<LigneDB> getFullStationLignes(String scode);
 
     @Transaction
-    @Query("SELECT * FROM LigneDB")
-    public List<LigneAndFullStationDepart> getLigneAndFullStationDeparts();
+    @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
+    public List<LigneAndFullStationDepart> getLigneAndFullStationDeparts(String lid);
 
     @Transaction
-    @Query("SELECT * FROM LigneDB")
-    public List<LigneAndFullStationArriver> geLigneAndFullStationArrivers();
+    @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
+    public List<LigneAndFullStationArriver> getLigneAndFullStationArrivers(String lid);
 
 }

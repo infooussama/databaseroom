@@ -3,12 +3,14 @@ package com.example.relationbdd.model;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
+import java.util.List;
+
 public class LigneAndFullStationArriver {
     @Embedded
     public LigneDB ligneDB;
     @Relation(
-            parentColumn = "lid",
-            entityColumn = "id_arrive"
+            parentColumn = "id_arrive",
+            entityColumn = "scode"
     )
-    public FullStation fullStation;
+    public List<FullStation> fullStations;
 }
