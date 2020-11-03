@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
 import com.example.relationbdd.JsonData.StationData;
+import com.example.relationbdd.dao.DistanceDao;
 import com.example.relationbdd.dao.FullStationDao;
 import com.example.relationbdd.dao.FullStationLigneDBCrossRefDao;
 import com.example.relationbdd.dao.LigneDao;
@@ -18,14 +20,17 @@ import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.fragment.FullStationFragment;
 import com.example.relationbdd.fragment.ItineraireFragment;
 import com.example.relationbdd.fragment.LigneFragment;
+import com.example.relationbdd.model.Distance;
 import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.FullStationLigneDBCrossRef;
+import com.example.relationbdd.model.LigneAndFullStationDepart;
 import com.example.relationbdd.model.LigneDB;
 import com.example.relationbdd.model.StationDB;
 import com.example.relationbdd.model.TransfertAndFullStation;
 import com.example.relationbdd.model.TransfertDB;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +40,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     RoomDB roomDB;
@@ -44,38 +54,60 @@ public class MainActivity extends AppCompatActivity {
     FullStationDao fullStationDao;
     TransfertDao transfertDao;
     LigneDao ligneDao;
+    DistanceDao distanceDao;
     FullStationLigneDBCrossRefDao fullStationLigneDBCrossRefDao;
     boolean check = true;
     private ChipNavigationBar chipNavigationBar;
     private Fragment fragment = null;
+    List<LigneDB> ligneDBS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
         initFragments();
-        if(check){
+        if(fullStationDao.getCountFullstations() == 0 && transfertDao.getCountTransfertDb() == 0 && fullStationLigneDBCrossRefDao.getCountFullStationLigneDBCrossRef() == 0){
             fullData = fillWithStartingData(this);
             stationData = fillWithStartingData2(this);
             insertFullStation();
             insertLigneAndCrossRef();
             insertTransfert();
-            check = false;
+            //insertDistance();
         }
 
-        //List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
-        //List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
-        /*Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLid());
+        ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
+
+        List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
+        Log.e("aaaaaaaaa",""+ligneDBS.size());
         Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
         Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLid());
-        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());*/
-        //Log.e("LineFullstations",""+fullStations.size());
+        Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());
 
-        //List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
+        Log.e("LineFullstations",""+fullStations.size());
 
-        //Log.e("kezaikebch",""+ kezai.get(0).transfertDBList.size());
+        Log.e("LineFullstations",""+fullStations.get(0).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(1).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(2).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(3).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(4).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(5).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(6).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(30).getStationDB().getSname());
 
+       // List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
 
+        //List<Distance> distances = distanceDao.getDistances("16ABN138B");
+
+        /*Log.e("kezaikebch",""+ distances.size());
+        for(Distance distance : distances){
+            Log.e("kezaikebch2",""+ distance.getScodeA());
+        }*/
+
+        List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts();
+        for(LigneAndFullStationDepart distance : ligneAndFullStationDeparts){
+            Log.e("kezaikebch2",""+ distance.ligneDB.getId_depart());
+        }
     }
 
     public void init(){
@@ -83,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         fullStationDao = roomDB.fullStationDao();
         transfertDao = roomDB.transfertDao();
         ligneDao = roomDB.ligneDao();
+        distanceDao = roomDB.distanceDao();
         fullStationLigneDBCrossRefDao = roomDB.fullStationLigneDBCrossRefDao();
         chipNavigationBar = findViewById(R.id.chipNavigation);
         chipNavigationBar.setItemSelected(R.id.itineraires,true);
@@ -126,6 +159,42 @@ public class MainActivity extends AppCompatActivity {
                             Integer.parseInt(stationData.getStations().get(i).getCid()),
                             stationData.getStations().get(i).getCname())));
         }
+    }
+
+    public void insertDistance(){
+        for (int i=0;i<fullData.getFull_stations().size();i++){
+
+            ligneDBS = ligneDao.getFullStationLignes(fullData.getFull_stations().get(i).getScode());
+
+            for (int j=0;j < ligneDBS.size();j++){
+                List<FullStation> fullStations = fullStationDao.getLineFullstations(ligneDBS.get(j).getLid());
+
+                for(int k =0 ; k < fullStations.size() ;k++){
+
+                    /*ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
+
+                    List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
+                    Log.e("aaaaaaaaa",""+ligneDBS.size());
+                    Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
+                    Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLid());
+                    Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());
+
+                    Log.e("LineFullstations",""+fullStations.size());
+
+                    Log.e("LineFullstations",""+fullStations.get(0).getStationDB().getSname());
+                    Log.e("LineFullstations",""+fullStations.get(1).getStationDB().getSname());*/
+
+                    distanceDao.insert(new Distance(fullData.getFull_stations().get(i).getScode(),
+                            fullStations.get(k).getScode(),CalculationByDistance(
+                            new LatLng(fullData.getFull_stations().get(i).getStop_lat(),fullData.getFull_stations().get(i).getStop_lon()),
+                            new LatLng(fullData.getFull_stations().get(k).getStop_lat(),fullData.getFull_stations().get(k).getStop_lon()))));
+
+                }
+
+            }
+
+        }
+
     }
 
     public void insertLigneAndCrossRef(){
@@ -230,6 +299,28 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return null;
+    }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.getLatitude();
+        double lat2 = EndP.getLatitude();
+        double lon1 = StartP.getLongitude();
+        double lon2 = EndP.getLongitude();
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        return Radius * c;
     }
 
 }

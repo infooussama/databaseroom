@@ -15,6 +15,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface FullStationDao {
+
     @Insert(onConflict = REPLACE)
     void insert(FullStation fullStation);
 
@@ -34,5 +35,7 @@ public interface FullStationDao {
     @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid")
     public List<FullStation> getLineFullstations(String lid);
 
+    @Query("SELECT COUNT(*) FROM FullStation")
+    public int getCountFullstations();
 
 }

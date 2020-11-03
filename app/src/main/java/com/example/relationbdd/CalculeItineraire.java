@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.mapbox.mapboxsdk.geometry.LatLng;
+
+import java.text.DecimalFormat;
 
 public class CalculeItineraire extends AppCompatActivity {
     RelativeLayout depart,destination;
@@ -35,8 +40,5 @@ public class CalculeItineraire extends AppCompatActivity {
                 CalculeItineraire.this.startActivity(intent);
             }
         });
-
-
-
     }
 }

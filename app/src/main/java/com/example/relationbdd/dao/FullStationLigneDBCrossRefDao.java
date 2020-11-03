@@ -23,4 +23,7 @@ public interface FullStationLigneDBCrossRefDao {
     @Query("SELECT * FROM FullStationLigneDBCrossRef")
     List<FullStationLigneDBCrossRef> getAllFullStationLigneDBCrossRef();
 
+    @Query("SELECT COUNT(*) FROM FullStationLigneDBCrossRef")
+    public int getCountFullStationLigneDBCrossRef();
+
 }

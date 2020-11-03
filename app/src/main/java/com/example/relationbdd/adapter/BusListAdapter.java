@@ -26,6 +26,7 @@ public class BusListAdapter extends RecyclerView.Adapter<BusListAdapter.ViewHold
     private RoomDB database;
     private List<FullStation> dataList;
     private List<FullStation> filtredataList;
+
     public BusListAdapter(Activity context,List<FullStation> dataList){
         this.context=context;
         this.dataList = dataList;

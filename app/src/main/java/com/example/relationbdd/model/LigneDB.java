@@ -44,6 +44,12 @@ public class LigneDB {
     @Ignore
     private List<FullStation> fullStations;
 
+    @ColumnInfo(name="id_depart")
+    private String id_depart;
+
+    @ColumnInfo(name="id_arrive")
+    private String id_arrive;
+
     public LigneDB(@NonNull String lid, String ltype, String operator_id, String lnum, String lname, int nbs, String op_id, String op_name, String op_color) {
         this.lid = lid;
         this.ltype = ltype;
@@ -54,6 +60,22 @@ public class LigneDB {
         this.op_id = op_id;
         this.op_name = op_name;
         this.op_color = op_color;
+    }
+
+    public String getId_depart() {
+        return id_depart;
+    }
+
+    public void setId_depart(String id_depart) {
+        this.id_depart = id_depart;
+    }
+
+    public String getId_arrive() {
+        return id_arrive;
+    }
+
+    public void setId_arrive(String id_arrive) {
+        this.id_arrive = id_arrive;
     }
 
     @NonNull

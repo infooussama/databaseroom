@@ -22,4 +22,7 @@ public interface TransfertDao {
 
     @Query("SELECT * FROM FullStation")
     List<FullStation> getAllFullStation();
+
+    @Query("SELECT COUNT(*) FROM TransfertDB")
+    public int getCountTransfertDb();
 }
