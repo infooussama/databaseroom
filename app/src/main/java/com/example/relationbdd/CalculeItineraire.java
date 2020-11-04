@@ -2,6 +2,7 @@ package com.example.relationbdd;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,8 +38,27 @@ public class CalculeItineraire extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CalculeItineraire.this, ListStation.class);
-                CalculeItineraire.this.startActivity(intent);
+                intent.putExtra("code",1);
+                CalculeItineraire.this.startActivityForResult(intent, 0);
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            if(resultCode == Activity.RESULT_OK){
+                String code = data.getStringExtra("station_code");
+                String name = data.getStringExtra("station_name");
+                double lat = data.getDoubleExtra("station_lat",0);
+                double lon = data.getDoubleExtra("station_lon",0);
+                departText.setText(name);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 }

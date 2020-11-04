@@ -75,6 +75,7 @@ public class ItineraireFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListStation.class);
+                intent.putExtra("code",0);
                 getActivity().startActivity(intent);
             }
         });

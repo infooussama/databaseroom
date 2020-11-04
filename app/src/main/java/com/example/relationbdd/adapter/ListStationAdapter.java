@@ -3,6 +3,7 @@ package com.example.relationbdd.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +28,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.ViewHolder> {
+
     private Activity context;
     private RoomDB database;
     private List<FullStation> dataList;
     private List<FullStation> filtredataList;
     int c=2;
+    private int intentCode;
+
     public ListStationAdapter(Activity context, List<FullStation> dataList){
-        this.context=context;
+        this.context = context;
         this.dataList = dataList;
         this.filtredataList = dataList;
+        this.intentCode = this.context.getIntent().getIntExtra("code", -1);
         notifyDataSetChanged();
     }
     @NonNull
@@ -56,12 +61,23 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context,"ItemClicked"+data.getStationDB().getSname(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(context, CalculeItineraire.class);
-                intent.putExtra("station_code",filtredataList.get(position).getScode());
-                intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
-                intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
-                intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());
-                context.startActivity(intent);
+                if(intentCode == 0){
+                    Intent intent = new Intent(context, CalculeItineraire.class);
+                    intent.putExtra("station_code",filtredataList.get(position).getScode());
+                    intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
+                    intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
+                    intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());
+                    context.startActivity(intent);
+                }
+                if(intentCode == 1){
+                    Intent intent = new Intent();
+                    intent.putExtra("station_code",filtredataList.get(position).getScode());
+                    intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
+                    intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
+                    intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());
+                    context.setResult(Activity.RESULT_OK, intent);
+                    context.finish();
+                }
             }
 
         });
