@@ -105,10 +105,19 @@ public class MainActivity extends AppCompatActivity {
             Log.e("kezaikebch2",""+ distance.getScodeA());
         }*/
 
-        List<LigneAndFullStationArriver> LigneAndFullStationArriver = ligneDao.getLigneAndFullStationArrivers("E160003R");
+        List<LigneAndFullStationArriver> LigneAndFullStationArriver = ligneDao.getLigneAndFullStationArrivers("E160003A");
         for(LigneAndFullStationArriver distance : LigneAndFullStationArriver){
-            Log.e("Hamada Kebcha",""+ distance.fullStations.size());
+            Log.e("Hamada Kebcha",""+ distance.fullStations.get(0).getScode());
+            break;
         }
+
+        List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts("E160003A");
+        for(LigneAndFullStationDepart distance : ligneAndFullStationDeparts){
+            Log.e("Hamada Kebcha",""+ distance.fullStations.get(0).getScode());
+            break;
+        }
+
+
     }
 
     public void init(){
@@ -199,6 +208,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertLigneAndCrossRef(){
+        Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode());
+
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getLines().size();j++){
                 ligneDao.insert(new LigneDB(fullData.getFull_stations().get(i).getLines().get(j).getLid(),
@@ -210,10 +221,19 @@ public class MainActivity extends AppCompatActivity {
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_id(),
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_name(),
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_color(),
-                        "16ABN138B"));
+                        fullData.getFull_stations().get(i).getLines().get(j).getTerminus().getScode()));
                 fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef(fullData.getFull_stations().get(i).getScode(),
                         fullData.getFull_stations().get(i).getLines().get(j).getLid()));
             }
+        }
+
+        List<LigneDB> ligneDBS = ligneDao.getLigneDbs();
+        for(LigneDB ligneDB : ligneDBS){
+            List<LigneDB> arrivaleAndBegining = ligneDao.getStartAndArrival(ligneDB.getLid().substring(0,ligneDB.getLid().length() - 1)+"%");
+            arrivaleAndBegining.get(0).setId_depart(arrivaleAndBegining.get(1).getId_arrive());
+            arrivaleAndBegining.get(1).setId_depart(arrivaleAndBegining.get(0).getId_arrive());
+            ligneDao.update(arrivaleAndBegining.get(0));
+            ligneDao.update(arrivaleAndBegining.get(1));
         }
     }
 

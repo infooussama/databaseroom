@@ -13,6 +13,7 @@ public class Ligne {
     private String  op_id;
     private String  op_name;
     private String  op_color;
+    private FullStation terminus;
 
     public String getLid() {
         return lid;
@@ -84,5 +85,13 @@ public class Ligne {
 
     public void setOp_color(String op_color) {
         this.op_color = op_color;
+    }
+
+    public FullStation getTerminus() {
+        return terminus;
+    }
+
+    public void setTerminus(FullStation terminus) {
+        this.terminus = terminus;
     }
 }
