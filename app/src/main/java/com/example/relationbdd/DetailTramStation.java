@@ -14,6 +14,7 @@ import com.example.relationbdd.adapter.DetailBusListAdapter;
 import com.example.relationbdd.adapter.DetailTramListAdapter;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.model.LigneAndFullStationArriver;
 import com.example.relationbdd.model.LigneDB;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
@@ -26,6 +27,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailTramStation extends AppCompatActivity {
@@ -36,6 +38,7 @@ public class DetailTramStation extends AppCompatActivity {
     DetailTramListAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     LigneDao ligneDao;
+    List<LigneAndFullStationArriver> LigneAndFullStationArriver = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +54,13 @@ public class DetailTramStation extends AppCompatActivity {
         database = RoomDB.getInstance(this);
         ligneDao = database.ligneDao();
         List<LigneDB> ligneDBS = ligneDao.getFullStationLignes(code);
+        for(LigneDB distance : ligneDBS){
+            LigneAndFullStationArriver.add(ligneDao.getLigneAndFullStationArrivers(distance.getLid()));
+        }
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new DetailTramListAdapter(this,ligneDBS);
+        adapter = new DetailTramListAdapter(this,LigneAndFullStationArriver);
 
         recyclerView.setAdapter(adapter);
 

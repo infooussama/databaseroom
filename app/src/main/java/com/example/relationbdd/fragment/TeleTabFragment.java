@@ -1,11 +1,6 @@
 package com.example.relationbdd.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,31 +10,34 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.relationbdd.R;
-import com.example.relationbdd.adapter.BusListAdapter;
-import com.example.relationbdd.adapter.LigneListAdapter;
+import com.example.relationbdd.adapter.TeleListAdapter;
+import com.example.relationbdd.adapter.TramListAdapter;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.FullStation;
-import com.example.relationbdd.model.LigneDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LigneFragment#newInstance} factory method to
+ * Use the {@link TeleTabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LigneFragment extends Fragment {
+public class TeleTabFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
-    List<LigneDB> dataList = new ArrayList<>();
+    List<FullStation> dataList = new ArrayList<>();
     LinearLayoutManager linearLayoutManager;
     RoomDB database;
-    LigneListAdapter adapter;
+    TeleListAdapter adapter;
     EditText searchView;
     CharSequence search="";
 
@@ -47,7 +45,7 @@ public class LigneFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public LigneFragment() {
+    public TeleTabFragment() {
         // Required empty public constructor
     }
 
@@ -57,11 +55,11 @@ public class LigneFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LigneFragment.
+     * @return A new instance of fragment BusTabFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LigneFragment newInstance(String param1, String param2) {
-        LigneFragment fragment = new LigneFragment();
+    public static TeleTabFragment newInstance(String param1, String param2) {
+        TeleTabFragment fragment = new TeleTabFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,15 +80,15 @@ public class LigneFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_ligne, container, false);
+        View view = inflater.inflate(R.layout.fragment_tele_tab, container, false);
         searchView = view.findViewById(R.id.search_bar);
         recyclerView = view.findViewById(R.id.recycler_view);
         database = RoomDB.getInstance(getActivity());
-        dataList = database.ligneDao().getLigneDbs();
+        dataList = database.fullStationDao().getFullStationsBus("Téléphérique");
         Log.e("nbr ligne", ""+dataList.size());
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new LigneListAdapter(getActivity(),dataList);
+        adapter = new TeleListAdapter(getActivity(),dataList);
         recyclerView.setAdapter(adapter);
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -110,6 +108,6 @@ public class LigneFragment extends Fragment {
             }
         });
         return view;
-    }
 
+    }
 }

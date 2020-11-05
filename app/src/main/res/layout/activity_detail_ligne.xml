@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".DetailBusStation">
-
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    tools:context=".DetailLigne">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -18,7 +17,7 @@
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/station_name"
-            android:layout_width="340dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
@@ -39,19 +38,15 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#343437"
-        android:text="Destinations au depart de cette station"
+        android:text="Les stations de cette ligne"
         android:textColor="#ffffff"
         android:textSize="16sp"
         android:textAlignment="center"
         android:padding="8dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_view"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/list_row_main"/>
-
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/list_row_main_ligne_detail"/>
 </LinearLayout>

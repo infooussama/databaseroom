@@ -9,20 +9,22 @@ import android.widget.TextView;
 
 import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneAndFullStationArriver;
-import com.example.relationbdd.model.LigneDB;
+import com.example.relationbdd.model.LigneAndFullStationDepart;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DetailMetroListAdapter extends RecyclerView.Adapter<DetailMetroListAdapter.ViewHolder> {
+public class DetailLigneListAdapter extends RecyclerView.Adapter<DetailLigneListAdapter.ViewHolder> {
     private Activity context;
     private RoomDB database;
-    private List<LigneAndFullStationArriver> dataList;
+    private List<FullStation> dataList;
 
-    public DetailMetroListAdapter(Activity context, List<LigneAndFullStationArriver> dataList) {
+
+    public DetailLigneListAdapter(Activity context, List<FullStation> dataList) {
         this.context = context;
         this.dataList = dataList;
         notifyDataSetChanged();
@@ -30,18 +32,18 @@ public class DetailMetroListAdapter extends RecyclerView.Adapter<DetailMetroList
 
     @NonNull
     @Override
-    public DetailMetroListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DetailLigneListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_main, parent, false);
+                .inflate(R.layout.list_row_main_ligne_detail, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DetailMetroListAdapter.ViewHolder holder, int position) {
-        LigneAndFullStationArriver data = dataList.get(position);
+    public void onBindViewHolder(@NonNull DetailLigneListAdapter.ViewHolder holder, int position) {
+        FullStation data = dataList.get(position);
         database = RoomDB.getInstance(context);
-        holder.textView.setText(data.fullStations.get(0).getStationDB().getSname());
-        holder.textView2.setText(data.fullStations.get(0).getStationDB().getCname());
+        holder.textView.setText(data.getStationDB().getSname());
+        holder.textView2.setText(data.getStationDB().getCname());
     }
 
     @Override

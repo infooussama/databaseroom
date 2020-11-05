@@ -10,19 +10,18 @@ import android.widget.TextView;
 import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.LigneAndFullStationArriver;
-import com.example.relationbdd.model.LigneDB;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DetailMetroListAdapter extends RecyclerView.Adapter<DetailMetroListAdapter.ViewHolder> {
+public class DetailTeleListAdapter extends RecyclerView.Adapter<DetailTeleListAdapter.ViewHolder> {
     private Activity context;
     private RoomDB database;
     private List<LigneAndFullStationArriver> dataList;
 
-    public DetailMetroListAdapter(Activity context, List<LigneAndFullStationArriver> dataList) {
+    public DetailTeleListAdapter(Activity context, List<LigneAndFullStationArriver> dataList) {
         this.context = context;
         this.dataList = dataList;
         notifyDataSetChanged();
@@ -30,14 +29,14 @@ public class DetailMetroListAdapter extends RecyclerView.Adapter<DetailMetroList
 
     @NonNull
     @Override
-    public DetailMetroListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DetailTeleListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_main, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DetailMetroListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DetailTeleListAdapter.ViewHolder holder, int position) {
         LigneAndFullStationArriver data = dataList.get(position);
         database = RoomDB.getInstance(context);
         holder.textView.setText(data.fullStations.get(0).getStationDB().getSname());

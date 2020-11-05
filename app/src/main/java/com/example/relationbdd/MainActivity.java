@@ -105,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
             Log.e("kezaikebch2",""+ distance.getScodeA());
         }*/
 
-        List<LigneAndFullStationArriver> LigneAndFullStationArriver = ligneDao.getLigneAndFullStationArrivers("E160003A");
+       /* List<LigneAndFullStationArriver> LigneAndFullStationArriver = ligneDao.getLigneAndFullStationArrivers("E160003A");
         for(LigneAndFullStationArriver distance : LigneAndFullStationArriver){
             Log.e("Hamada Kebcha",""+ distance.fullStations.get(0).getScode());
             break;
-        }
+        }*/
 
         List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts("E160003A");
         for(LigneAndFullStationDepart distance : ligneAndFullStationDeparts){

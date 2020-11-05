@@ -1,6 +1,7 @@
 package com.example.relationbdd.dao;
 
 import com.example.relationbdd.model.FullStation;
+import com.example.relationbdd.model.LigneAndFullStationArriver;
 import com.example.relationbdd.model.TransfertDB;
 
 import java.util.List;
@@ -23,5 +24,8 @@ public interface StationDao {
 
     @Query("SELECT * FROM FullStation")
     List<FullStation> getAllFullStation();
+
+    @Query("SELECT * FROM FullStation WHERE FullStation.scode=:scode")
+    FullStation getFullStations(String scode);
 
 }

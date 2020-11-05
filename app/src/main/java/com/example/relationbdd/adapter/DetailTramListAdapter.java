@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.model.LigneAndFullStationArriver;
 import com.example.relationbdd.model.LigneDB;
 
 import java.util.List;
@@ -19,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class DetailTramListAdapter extends RecyclerView.Adapter<DetailTramListAdapter.ViewHolder> {
     private Activity context;
     private RoomDB database;
-    private List<LigneDB> dataList;
+    private List<LigneAndFullStationArriver> dataList;
 
-    public DetailTramListAdapter(Activity context, List<LigneDB> dataList) {
+    public DetailTramListAdapter(Activity context, List<LigneAndFullStationArriver> dataList) {
         this.context = context;
         this.dataList = dataList;
         notifyDataSetChanged();
@@ -37,10 +38,10 @@ public class DetailTramListAdapter extends RecyclerView.Adapter<DetailTramListAd
 
     @Override
     public void onBindViewHolder(@NonNull DetailTramListAdapter.ViewHolder holder, int position) {
-        LigneDB data = dataList.get(position);
+        LigneAndFullStationArriver data = dataList.get(position);
         database = RoomDB.getInstance(context);
-        holder.textView.setText(data.getLname());
-        holder.textView2.setText(data.getOp_color());
+        holder.textView.setText(data.fullStations.get(0).getStationDB().getSname());
+        holder.textView2.setText(data.fullStations.get(0).getStationDB().getCname());
     }
 
     @Override

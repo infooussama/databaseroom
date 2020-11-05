@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.relationbdd.adapter.DetailMetroListAdapter;
-import com.example.relationbdd.adapter.DetailTramListAdapter;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.LigneAndFullStationArriver;
@@ -21,7 +20,6 @@ import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -30,7 +28,8 @@ import com.mapbox.mapboxsdk.maps.Style;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailMetroStation extends AppCompatActivity {
+public class DetailTeleStation extends AppCompatActivity {
+
     TextView textView;
     MapView mapView;
     RecyclerView recyclerView;
@@ -39,11 +38,12 @@ public class DetailMetroStation extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     LigneDao ligneDao;
     List<LigneAndFullStationArriver> LigneAndFullStationArriver = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.access_token));
-        setContentView(R.layout.activity_detail_full_station);
+        setContentView(R.layout.activity_detail_tele_station);
         textView = findViewById(R.id.station_name);
 
         Intent intent = getIntent();
@@ -73,7 +73,7 @@ public class DetailMetroStation extends AppCompatActivity {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
 
-                       Marker marker = mapboxMap.addMarker(new MarkerOptions()
+                        Marker marker = mapboxMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(lat, lon))
                                 .title(name));
                         CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(lat,lon));

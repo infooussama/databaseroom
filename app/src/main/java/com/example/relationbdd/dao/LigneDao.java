@@ -42,6 +42,6 @@ public interface LigneDao {
 
     @Transaction
     @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
-    public List<LigneAndFullStationArriver> getLigneAndFullStationArrivers(String lid);
+    public LigneAndFullStationArriver getLigneAndFullStationArrivers(String lid);
 
 }

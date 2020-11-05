@@ -93,7 +93,8 @@ public class FullStationFragment extends Fragment {
         MainAdapter adapter = new MainAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new BusTabFragment(),"Bus");
         adapter.addFragment(new MetroTabFragment(),"Metro");
-        adapter.addFragment(new TramTabFragment(),"Tram");
+        adapter.addFragment(new TramTabFragment(),"tramway");
+        adapter.addFragment(new TeleTabFragment(),"Téléphérique");
 
         viewPager.setAdapter(adapter);
 
