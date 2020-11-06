@@ -28,6 +28,9 @@ public interface FullStationDao {
     @Query("SELECT * FROM [FullStation] WHERE stype =:bus")
     public List<FullStation> getFullStationsBus(String bus);
 
+    @Query("SELECT * FROM [FullStation] WHERE scode =:scode")
+    public FullStation getFullStations(String scode);
+
     @Transaction
     @Query("SELECT * FROM FullStation")
     public List<TransfertAndFullStation> getStationWithTransfert();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,10 @@ import com.example.relationbdd.CalculeItineraire;
 import com.example.relationbdd.ListStation;
 import com.example.relationbdd.MainActivity;
 import com.example.relationbdd.R;
+import com.example.relationbdd.acs.Graphf;
+import com.example.relationbdd.model.FullStation;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
 import com.example.relationbdd.JsonData.StationData;
+import com.example.relationbdd.acs.Graphf;
 import com.example.relationbdd.dao.DistanceDao;
 import com.example.relationbdd.dao.FullStationDao;
 import com.example.relationbdd.dao.FullStationLigneDBCrossRefDao;
@@ -76,8 +77,19 @@ public class MainActivity extends AppCompatActivity {
             insertTransfert();
             //insertDistance();
         }
-
-        ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
+        Graphf graphf = new Graphf();
+        ArrayList<ArrayList<FullStation>> arrayLists = graphf.graph();
+        Log.e("routsize",""+arrayLists.size());
+        for (int i = 0; i < arrayLists.size(); i++) {
+            System.out.println ("*****************");
+            Log.e("feto",""+arrayLists.get(i).size());
+            for (int j = 0; j < arrayLists.get(i).size(); j++) {
+                Log.e("aaaaaaaaa",""+arrayLists.get(i).get(j).getScode());
+                Log.e("aaaaaaaaa",""+arrayLists.get(i).get(j).getStationDB().getSname());
+                //System.out.println (arrayLists.get(i).get(j).getStationDB().getSname());
+            }
+        }
+        /*ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
 
         List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
         Log.e("aaaaaaaaa",""+ligneDBS.size());
@@ -94,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("LineFullstations",""+fullStations.get(4).getStationDB().getSname());
         Log.e("LineFullstations",""+fullStations.get(5).getStationDB().getSname());
         Log.e("LineFullstations",""+fullStations.get(6).getStationDB().getSname());
-        Log.e("LineFullstations",""+fullStations.get(30).getStationDB().getSname());
+        Log.e("LineFullstations",""+fullStations.get(30).getStationDB().getSname());*/
 
        // List<TransfertAndFullStation> kezai = fullStationDao.getStationWithTransfert();
 
@@ -111,11 +123,39 @@ public class MainActivity extends AppCompatActivity {
             break;
         }*/
 
-        List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts("E160003A");
-        for(LigneAndFullStationDepart distance : ligneAndFullStationDeparts){
-            Log.e("Hamada Kebcha",""+ distance.fullStations.get(0).getScode());
-            break;
+        /*List<LigneAndFullStationDepart> ligneAndFullStationDeparts = ligneDao.getLigneAndFullStationDeparts();
+        for(int i =0;i<ligneAndFullStationDeparts.size();i++){
+            for (int j =0;j<ligneAndFullStationDeparts.get(i).fullStations.size();j++){
+            Log.e("Hamada Kebcha",""+ ligneAndFullStationDeparts.get(i).fullStations.get(j).getStationDB().getSname());
+            }
         }
+
+        List<LigneAndFullStationArriver> ligneAndFullStationArrivers = ligneDao.getLigneAndFullStationArrivers();
+        for(int i =0;i<ligneAndFullStationArrivers.size();i++){
+            for (int j =0;j<ligneAndFullStationArrivers.get(i).fullStations.size();j++){
+                Log.e("Hamada Kebcha",""+ ligneAndFullStationArrivers.get(i).fullStations.get(j).getStationDB().getSname());
+            }
+        }*/
+
+        /*List<FullStation> fullStations1 = new ArrayList<>();
+        List<FullStation> fullStations2 = new ArrayList<>();
+        List<String> stringsArriver = ligneDao.getLigneArrive();
+        List<String> stringsDepart = ligneDao.getLigneDepart();
+        for (int i =0;i<stringsArriver.size();i++){
+            fullStations2.add(fullStationDao.getFullStations(stringsDepart.get(i)));
+            fullStations1.add(fullStationDao.getFullStations(stringsArriver.get(i)));
+            Log.e("Striings", ""+stringsArriver.size());
+        }
+        Log.e("Station Depart size", ""+fullStations1.size());
+        for (int i =0;i<fullStations1.size();i++){
+            Log.e("Station Depart", ""+fullStations1.get(i).getStationDB().getSname());
+        }
+        for (int i =0;i<fullStations2.size();i++){
+            Log.e("Station Aeeiver", ""+fullStations2.get(i).getStationDB().getSname());
+        }
+*/
+
+
 
 
     }

@@ -37,8 +37,16 @@ public interface LigneDao {
     public List<LigneDB> getStartAndArrival(String lid);
 
     @Transaction
-    @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
-    public List<LigneAndFullStationDepart> getLigneAndFullStationDeparts(String lid);
+    @Query("SELECT DISTINCT * FROM LigneDB")
+    public List<LigneAndFullStationDepart> getLigneAndFullStationDeparts();
+
+    @Transaction
+    @Query("SELECT DISTINCT id_arrive FROM LigneDB")
+    public List<String> getLigneArrive();
+
+    @Transaction
+    @Query("SELECT DISTINCT id_depart FROM LigneDB")
+    public List<String> getLigneDepart();
 
     @Transaction
     @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
