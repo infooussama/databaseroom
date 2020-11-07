@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             System.out.println ("*****************");
             Log.e("feto",""+arrayLists.get(i).size());
             for (int j = 0; j < arrayLists.get(i).size(); j++) {
-                Log.e("aaaaaaaaa",""+arrayLists.get(i).get(j).getScode());
                 Log.e("aaaaaaaaa",""+arrayLists.get(i).get(j).getStationDB().getSname());
                 //System.out.println (arrayLists.get(i).get(j).getStationDB().getSname());
             }

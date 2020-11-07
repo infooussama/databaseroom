@@ -9,8 +9,6 @@ import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneDB;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -44,7 +42,7 @@ public class Graphf extends AppCompatActivity {
             stations.add(fullStationDao.getFullStations(stringsArriver.get(i)));
         }
         chosenStation = new ArrayList<>();
-        routes = new ArrayList<ArrayList<FullStation>>(10);
+        routes = new ArrayList<ArrayList<FullStation>>();
         for(count = 0; count<10 ;count++){
             lenght = 0;
             nodes = new ArrayList<FullStation>();
@@ -55,12 +53,11 @@ public class Graphf extends AppCompatActivity {
                 nodes.add(item);
                 routes.add(nodes);
             }else {
-                nodes2 = new ArrayList<>();
                 index = r.nextInt(stations.size());
                 item = stations.get(index);
                 chosenStation.add(item);
-                nodes2.add(item);
-                routes.add(nodes2);
+                nodes.add(item);
+                routes.add(nodes);
             }
             lenght++;
             reverse = 1;
@@ -69,19 +66,33 @@ public class Graphf extends AppCompatActivity {
                 ligneDBS = ligneDao.getFullStationLignes(item.getScode());
                 for(int k =0; k<ligneDBS.size();k++){
                     if(!fullStationDao.getFullStations(ligneDBS.get(k).getId_arrive()).getScode().equals(item.getScode())){
-                        unused.add(fullStationDao.getFullStations(ligneDBS.get(k).getId_arrive()));
-                    }
-                }
-                unused2 = new ArrayList<>();
-                for(int z=0;z<unused.size();z++){
-                    for(int l=0;l<routes.get(count).size();l++){
-                        if(!unused.get(z).getScode().equals(routes.get(count).get(l).getScode())){
-                            unused2.add(unused.get(z));
+                        int b;
+                        for (b=0;b<unused.size();b++){
+                            if(unused.get(b).getScode().equals(ligneDBS.get(k).getId_arrive())){
+                                b=-1;
+                                break;
+                            }
+                        }
+                        if(b>=0){
+                            unused.add(fullStationDao.getFullStations(ligneDBS.get(k).getId_arrive()));
                         }
                     }
                 }
-
-                if(unused2 != null){
+                unused = unused;
+                unused2 = new ArrayList<>();
+                for(int z=0;z<unused.size();z++){
+                    int l;
+                    for(l=0;l<routes.get(count).size();l++){
+                        if(unused.get(z).getScode().equals(routes.get(count).get(l).getScode())){
+                            l = -1;
+                            break;
+                        }
+                    }
+                    if(l >= 0){
+                        unused2.add(unused.get(z));
+                    }
+                }
+                if(!unused2.isEmpty()){
                     lenght++;
                     index = r.nextInt(unused2.size());
                     item2 = unused2.get(index);
@@ -89,8 +100,9 @@ public class Graphf extends AppCompatActivity {
                     item = item2;
                     chosenStation.add(item2);
                 }else {
-                    item = routes.get(count).get(0);
-                    reverse--;
+                    routes.remove(count);
+                    count--;
+                    break;
                 }
             }
         }
