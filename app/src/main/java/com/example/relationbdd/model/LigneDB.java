@@ -47,6 +47,8 @@ public class LigneDB {
     @ColumnInfo(name="id_arrive")
     private String id_arrive;
 
+    private double phormoneLevel;
+
     public LigneDB(@NonNull String lid, String ltype, String operator_id, String lnum, String lname, int nbs, String op_id, String op_name, String op_color, String id_arrive) {
         this.lid = lid;
         this.ltype = ltype;
@@ -147,6 +149,14 @@ public class LigneDB {
 
     public void setOp_color(String op_color) {
         this.op_color = op_color;
+    }
+
+    public double getPhormoneLevel() {
+        return phormoneLevel;
+    }
+
+    public void setPhormoneLevel(double phormoneLevel) {
+        this.phormoneLevel = phormoneLevel;
     }
 
 }

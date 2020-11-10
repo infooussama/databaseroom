@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
 import com.example.relationbdd.JsonData.StationData;
+import com.example.relationbdd.acs.Ant;
 import com.example.relationbdd.acs.Graphf;
 import com.example.relationbdd.dao.DistanceDao;
 import com.example.relationbdd.dao.FullStationDao;
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
     boolean check = true;
     private ChipNavigationBar chipNavigationBar;
     private Fragment fragment = null;
-    List<LigneDB> ligneDBS;
+    List<LigneDB> ligneDBS,lignes;
+    List<String> stringsArriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,17 @@ public class MainActivity extends AppCompatActivity {
             insertTransfert();
             //insertDistance();
         }
-        Graphf graphf = new Graphf();
+        stringsArriver = ligneDao.getLigneArrive();
+        List<FullStation> stations = new ArrayList<>();
+        for (int i =0;i<stringsArriver.size();i++){
+            stations.add(fullStationDao.getFullStations(stringsArriver.get(i)));
+        }
+        FullStation a = fullStationDao.getFullStations("16MH1MAIB");
+        FullStation b = fullStationDao.getFullStations("16ABNAGCB");
+        lignes = ligneDao.getLigneDbs();
+        Ant ant = new Ant(stations,lignes,a,b);
+        ant.walk();
+        /*Graphf graphf = new Graphf();
         ArrayList<ArrayList<FullStation>> arrayLists = graphf.graph();
         Log.e("routsize",""+arrayLists.size());
         for (int i = 0; i < arrayLists.size(); i++) {
@@ -87,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("aaaaaaaaa",""+arrayLists.get(i).get(j).getStationDB().getSname());
                 //System.out.println (arrayLists.get(i).get(j).getStationDB().getSname());
             }
-        }
+        }*/
+
+
         /*ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
 
         List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
@@ -152,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i =0;i<fullStations2.size();i++){
             Log.e("Station Aeeiver", ""+fullStations2.get(i).getStationDB().getSname());
         }
-*/
+        */
 
 
 
@@ -247,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertLigneAndCrossRef(){
-        Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode());
+        //Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode());
 
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getLines().size();j++){
@@ -268,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
 
         List<LigneDB> ligneDBS = ligneDao.getLigneDbs();
         for(LigneDB ligneDB : ligneDBS){
+            ligneDB.setPhormoneLevel(1);
             List<LigneDB> arrivaleAndBegining = ligneDao.getStartAndArrival(ligneDB.getLid().substring(0,ligneDB.getLid().length() - 1)+"%");
             arrivaleAndBegining.get(0).setId_depart(arrivaleAndBegining.get(1).getId_arrive());
             arrivaleAndBegining.get(1).setId_depart(arrivaleAndBegining.get(0).getId_arrive());

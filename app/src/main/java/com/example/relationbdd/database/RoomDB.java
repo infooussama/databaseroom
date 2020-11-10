@@ -20,7 +20,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {StationDB.class, FullStation.class, TransfertDB.class, LigneDB.class, FullStationLigneDBCrossRef.class, Distance.class},version = 9)
+@Database(entities = {StationDB.class, FullStation.class, TransfertDB.class, LigneDB.class, FullStationLigneDBCrossRef.class, Distance.class},version = 11)
 public abstract class RoomDB extends RoomDatabase {
 
     public abstract StationDao stationDao();
