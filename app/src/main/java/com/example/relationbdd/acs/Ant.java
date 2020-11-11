@@ -24,6 +24,8 @@ public class Ant extends AppCompatActivity {
     RoomDB roomDB;
     FullStationDao fullStationDao;
     LigneDao ligneDao;
+    double[] phormoneLevel;
+    int i;boolean check;
 
     public Ant(List<FullStation> stations,List<LigneDB> lignes, FullStation start, FullStation end){
         this.stations = stations;
@@ -37,26 +39,47 @@ public class Ant extends AppCompatActivity {
         roomDB = RoomDB.getInstance(this);
         fullStationDao = roomDB.fullStationDao();
         ligneDao = roomDB.ligneDao();
+        phormoneLevel = new double[lignes.size()];
+
+        for(int i=0;i<phormoneLevel.length;i++){
+            phormoneLevel[i] = 1;
+        }
     }
 
     public void walk(){
-        while(currentStations != end){
+        while(!(currentStations.getScode().equals(end.getScode()))){
             move();
+        }
+        for (LigneDB e : solutionLigne){
+            Log.e("fetouhi",""+e.getLname());
         }
     }
 
     public void move(){
         List<LigneDB> adjacentLignes = ligneDao.getFullStationLignes(currentStations.getScode());
         List<LigneDB> possibleMoves = new ArrayList<>();
-
         for(LigneDB e : adjacentLignes){
             //if the finish is adjacent go there
-            if(e.getId_arrive() == end.getScode()){
+            if(e.getId_arrive().equals(end.getScode())){
                 currentStations = end;
                 visitedLigne.add(e);
                 solutionLigne.add(e);
                 dropPheremone(solutionLigne);
+                return;
             }
+            /*for(int i = 0;i<visitedLigne.size();i++){
+                if(!visitedLigne.get(i).getLname().equals(e.getLid())){
+                }
+            }*/
+            /*i=0; check=false;
+            while (i<visitedLigne.size()){
+                if(visitedLigne.get(i).getLid().equals(e.getLid())){
+                    check = true;
+                }
+            }
+            if (check == false){
+                possibleMoves.add(e);
+            }*/
             if(!visitedLigne.contains(e)){
                 possibleMoves.add(e);
             }
@@ -67,7 +90,6 @@ public class Ant extends AppCompatActivity {
         if(possibleMoves.size() == 0){
             next = choosePath(adjacentLignes);
         }
-        //otherwise choose one of the yet to be traveled edges
         else{
             next = choosePath(possibleMoves);
         }
@@ -76,7 +98,6 @@ public class Ant extends AppCompatActivity {
         currentStations = fullStationDao.getFullStations(s);
         visitedLigne.add(next);
         solutionLigne.add(next);
-        Log.e("solution","B:"+next.getId_arrive());
     }
 
     public String oppositeEnd(LigneDB ligneDB,FullStation fullStation){
@@ -96,14 +117,17 @@ public class Ant extends AppCompatActivity {
     public LigneDB choosePath(List<LigneDB> lignes){
         double totalPheremone = 0;
         for(LigneDB e : lignes){
-            totalPheremone += e.getPhormoneLevel();
+           int k = e.getPhormone_index();
+
+           totalPheremone += phormoneLevel[k];
         }
         Random random = new Random();
         double max = totalPheremone * random.nextDouble();
         double sum = 0;
         int i = 0;
         while(sum < max){
-            sum += lignes.get(i).getPhormoneLevel();
+            int m = lignes.get(i).getPhormone_index();
+            sum += phormoneLevel[m];
             i++;
         }
         return lignes.get(i-1);
@@ -111,8 +135,10 @@ public class Ant extends AppCompatActivity {
 
     public void dropPheremone(List<LigneDB> path){
         for(LigneDB e : path){
-            e.setPhormoneLevel(Q_0 / path.size());
+            int l = e.getPhormone_index();
+            phormoneLevel[l] += (Q_0 /path.size());
         }
     }
+
 }
 

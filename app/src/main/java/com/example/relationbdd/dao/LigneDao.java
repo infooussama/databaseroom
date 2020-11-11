@@ -52,4 +52,7 @@ public interface LigneDao {
     @Query("SELECT * FROM LigneDB WHERE LigneDB.lid=:lid")
     public LigneAndFullStationArriver getLigneAndFullStationArrivers(String lid);
 
+    @Query("UPDATE LigneDB SET phormone_index=:index WHERE lid = :id")
+    void updateindex(int index, String id);
+
 }

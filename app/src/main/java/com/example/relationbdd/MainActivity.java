@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i =0;i<stringsArriver.size();i++){
             stations.add(fullStationDao.getFullStations(stringsArriver.get(i)));
         }
-        FullStation a = fullStationDao.getFullStations("16MH1MAIB");
-        FullStation b = fullStationDao.getFullStations("16ABNAGCB");
+        FullStation a = fullStationDao.getFullStations("16ABNAGCB");
+        FullStation b = fullStationDao.getFullStations("16BEBCG1B");
         lignes = ligneDao.getLigneDbs();
         Ant ant = new Ant(stations,lignes,a,b);
         ant.walk();
@@ -167,10 +167,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("Station Aeeiver", ""+fullStations2.get(i).getStationDB().getSname());
         }
         */
-
-
-
-
+        
     }
 
     public void init(){
@@ -262,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void insertLigneAndCrossRef(){
         //Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode());
-
+        int k=0;
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getLines().size();j++){
                 ligneDao.insert(new LigneDB(fullData.getFull_stations().get(i).getLines().get(j).getLid(),
@@ -282,12 +279,13 @@ public class MainActivity extends AppCompatActivity {
 
         List<LigneDB> ligneDBS = ligneDao.getLigneDbs();
         for(LigneDB ligneDB : ligneDBS){
-            ligneDB.setPhormoneLevel(1);
+            ligneDao.updateindex(k,ligneDB.getLid());
             List<LigneDB> arrivaleAndBegining = ligneDao.getStartAndArrival(ligneDB.getLid().substring(0,ligneDB.getLid().length() - 1)+"%");
             arrivaleAndBegining.get(0).setId_depart(arrivaleAndBegining.get(1).getId_arrive());
             arrivaleAndBegining.get(1).setId_depart(arrivaleAndBegining.get(0).getId_arrive());
             ligneDao.update(arrivaleAndBegining.get(0));
             ligneDao.update(arrivaleAndBegining.get(1));
+            k++;
         }
     }
 

@@ -47,7 +47,8 @@ public class LigneDB {
     @ColumnInfo(name="id_arrive")
     private String id_arrive;
 
-    private double phormoneLevel;
+    @ColumnInfo(name="phormone_index")
+    private int phormone_index;
 
     public LigneDB(@NonNull String lid, String ltype, String operator_id, String lnum, String lname, int nbs, String op_id, String op_name, String op_color, String id_arrive) {
         this.lid = lid;
@@ -151,12 +152,12 @@ public class LigneDB {
         this.op_color = op_color;
     }
 
-    public double getPhormoneLevel() {
-        return phormoneLevel;
+    public int getPhormone_index() {
+        return phormone_index;
     }
 
-    public void setPhormoneLevel(double phormoneLevel) {
-        this.phormoneLevel = phormoneLevel;
+    public void setPhormone_index(int phormone_index) {
+        this.phormone_index = phormone_index;
     }
 
 }
