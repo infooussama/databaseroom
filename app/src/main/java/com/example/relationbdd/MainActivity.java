@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
 import com.example.relationbdd.JsonData.StationData;
+import com.example.relationbdd.acs.Acs;
 import com.example.relationbdd.acs.Ant;
 import com.example.relationbdd.acs.Graphf;
 import com.example.relationbdd.dao.DistanceDao;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             insertTransfert();
             //insertDistance();
         }
-        stringsArriver = ligneDao.getLigneArrive();
+        /*stringsArriver = ligneDao.getLigneArrive();
         List<FullStation> stations = new ArrayList<>();
         for (int i =0;i<stringsArriver.size();i++){
             stations.add(fullStationDao.getFullStations(stringsArriver.get(i)));
@@ -88,7 +89,14 @@ public class MainActivity extends AppCompatActivity {
         FullStation b = fullStationDao.getFullStations("16BEBCG1B");
         lignes = ligneDao.getLigneDbs();
         Ant ant = new Ant(stations,lignes,a,b);
-        ant.walk();
+        ant.walk();*/
+        Acs acs = new Acs();
+       Ant result = acs.calcule();
+       List<LigneDB> solu = result.getSolutionLigne();
+       for (LigneDB ligneDB : solu){
+           Log.e("feto",""+ligneDB.getLname());
+       }
+        Log.e("feto",""+acs.getBest());
         /*Graphf graphf = new Graphf();
         ArrayList<ArrayList<FullStation>> arrayLists = graphf.graph();
         Log.e("routsize",""+arrayLists.size());

@@ -18,12 +18,11 @@ public class Graphf extends AppCompatActivity {
 
     List<FullStation> stations;
     List<FullStation> chosenStation,unused,unused2;
-    int nbrRoute;int min;int max;
     int ligneLenght,lenght=0;
     FullStationDao fullStationDao;
     LigneDao ligneDao;
     RoomDB roomDB;
-    ArrayList<FullStation> nodes,nodes2;
+    ArrayList<FullStation> nodes;
     ArrayList<ArrayList<FullStation>> routes;
     Random r = new Random();
     List<LigneDB> ligneDBS;
