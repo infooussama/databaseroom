@@ -30,15 +30,10 @@ public class Ant extends AppCompatActivity {
     RoomDB roomDB;
     FullStationDao fullStationDao;
     LigneDao ligneDao;
-    int i;boolean check;
     List<LigneDB> possibleMoves;
-    public List<LigneDB> getSolutionLigne() {
-        return solutionLigne;
-    }
-    Acs acs = new Acs();
-    List<FullStation> fullStations = new ArrayList<>();;
     List<LigneDB> dbs;
-
+    public static double cout;
+    double distance;
     public Ant(List<FullStation> stations, List<LigneDB> lignes, FullStation start, FullStation end){
         this.stations = stations;
         this.lignes = lignes;
@@ -55,6 +50,7 @@ public class Ant extends AppCompatActivity {
         id = numAnts;
         numAnts++;
         dbs = ligneDao.getFullStationLignes(end.getScode());
+        cout = 0;
     }
 
     public void reset(FullStation source) {
@@ -63,6 +59,7 @@ public class Ant extends AppCompatActivity {
         visitedLigne = new ArrayList<>();
         visitedStation = new ArrayList<>();
         visitedStation.add(currentStations);
+        cout = 0;
     }
 
     public void walk(){
@@ -120,11 +117,17 @@ public class Ant extends AppCompatActivity {
             move();
         }
         else{
-          List<Double> prob2 = compute_probabilitie(possibleMoves);
-          next = choice(possibleMoves,prob2);
+            List<Double> prob2 = compute_probabilitie(possibleMoves);
+            next = choice(possibleMoves,prob2);
             String sa = next.getId_arrive();
             FullStation fullStation = fullStationDao.getFullStations(sa);
             visitedStation.add(fullStation);
+            distance = 0;
+            distance = CalculationByDistance(new LatLng(currentStations.getStop_lat(),
+                            currentStations.getStop_lon()),
+                    new LatLng(fullStation.getStop_lat(),
+                            fullStation.getStop_lon()));
+            cout = cout + distance;
             String s = oppositeEnd(next,currentStations);
             currentStations = fullStationDao.getFullStations(s);
             visitedLigne.add(next);
@@ -153,12 +156,25 @@ public class Ant extends AppCompatActivity {
         double pheromone = 0;
         double heuristic = 0;
         double sum = 0;
+        double pourcentage = 0;
         for(LigneDB e : possiblemove){
             int k = e.getPhormone_index();
+                if(e.getLtype().equals("M") || e.getLtype().equals("T")){
+                    pourcentage = 0.03;
+                }
+                if(e.getLtype().equals("B")){
+                    pourcentage = 0.01;
+                }
+                if(e.getLtype().equals("L")){
+                    pourcentage = 0.03;
+                }
+                if(e.getLtype().equals("P")){
+                    pourcentage = 0.9;
+                }
                 FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
-                sum += Math.pow(Acs.phormoneLevel[k], 2.0040331845764) * Math.pow(1.0/ CalculationByDistance(
+                sum += Math.pow(Acs.phormoneLevel[k], 2.0040331845764) * Math.pow(1.0/ (CalculationByDistance(
                         new LatLng(end.getStop_lat(),end.getStop_lon()),
-                        new LatLng(arrive.getStop_lat(),arrive.getStop_lon())),2.5138228981984807
+                        new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),2.5138228981984807
                 );
             }
         if (sum == 0)
@@ -166,19 +182,39 @@ public class Ant extends AppCompatActivity {
         double some = 0;
         for(LigneDB e : possiblemove){
             int k = e.getPhormone_index();
+            if(e.getLtype().equals("M") || e.getLtype().equals("T")){
+                pourcentage = 0.03;
+            }
+            if(e.getLtype().equals("B")){
+                pourcentage = 0.01;
+            }
+            if(e.getLtype().equals("L")){
+                pourcentage = 0.03;
+            }
+            if(e.getLtype().equals("P")){
+                pourcentage = 0.9;
+            }
             FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
             pheromone = Math.pow(Acs.phormoneLevel[k],2.0040331845764);
-            heuristic = Math.pow(1.0/ CalculationByDistance(
+            heuristic = Math.pow(1.0/ (CalculationByDistance(
                     new LatLng(end.getStop_lat(),end.getStop_lon()),
-                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon())),2.5138228981984807
+                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),2.5138228981984807
             );
+            Log.e("phormone puissance alpha",""+pheromone);
+
+            Log.e("distance",""+1.0/ (CalculationByDistance(
+                    new LatLng(end.getStop_lat(),end.getStop_lon()),
+                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage));
+            Log.e("heuristic",""+heuristic);
 
             double prob = (pheromone * heuristic) / sum;
+            //Log.e("prob",""+prob);
             some = prob + some;
+            //Log.e("some",""+some);
             probList.add(prob);
 
         }
-        //Log.e("some",""+some);
+        Log.e("some",""+some);
         return probList;
     }
 
@@ -231,7 +267,10 @@ public class Ant extends AppCompatActivity {
         int kmInDec = Integer.valueOf(newFormat.format(km));
         double meter = valueResult % 1000;
         int meterInDec = Integer.valueOf(newFormat.format(meter));
-        return Radius * c;
+        return kmInDec;
+    }
+    public List<LigneDB> getSolutionLigne() {
+        return solutionLigne;
     }
 }
 

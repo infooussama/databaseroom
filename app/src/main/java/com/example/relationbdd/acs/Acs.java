@@ -29,8 +29,8 @@ public class Acs extends AppCompatActivity {
     Ant bestAnt;
     double best;
     public static double[] phormoneLevel;
-    private static final double MAX_PHEROMONE = 0.0225;
-    private static final double MIN_PHEROMONE = 0.000015;
+    private static final double MAX_PHEROMONE = 1;
+    private static final double MIN_PHEROMONE = 0.0001;
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
 
@@ -43,7 +43,6 @@ public class Acs extends AppCompatActivity {
             for(int i=0;i<phormoneLevel.length;i++) {
                 phormoneLevel[i] = 0.00861821851041004;
             }
-
             a= fullStationDao.getFullStations("16ABNAGCB");
             b = fullStationDao.getFullStations("16BEKDRST");
             stringsArriver = ligneDao.getLigneArrive();
@@ -55,10 +54,10 @@ public class Acs extends AppCompatActivity {
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 999;
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
 
                 ants = new ArrayList<>();
-                for (int j = 0; j < 5; j++) {
+                for (int j = 0; j < 10; j++) {
                     ants.add(new Ant(stations,lignes,a,b));
                 }
                 for (Ant ant : ants) {
@@ -66,7 +65,7 @@ public class Acs extends AppCompatActivity {
                    ant.walk();
                    if(ant != null){
                        List<FullStation> visited = ant.getVisitedStation();
-                       double some=0.0,distance;
+                       /*double some=0.0,distance;
                        for(int j = 0;j<visited.size();j++){
                            if(j<visited.size()-1){
                                distance = CalculationByDistance(new LatLng(visited.get(j).getStop_lat(),
@@ -75,32 +74,32 @@ public class Acs extends AppCompatActivity {
                                                visited.get(j+1).getStop_lon()));
                                some = distance + some;
                            }
-                       }
-                        if (best > some) {
+                       }*/
+                        if (best > Ant.cout) {
                             bestAnt = ant;
-                            best = some;
+                            best = Ant.cout;
                         }
                         List<LigneDB> solu = bestAnt.getSolutionLigne();
                         for (LigneDB ligneDB : solu){
-                            Log.e("hamada",""+ligneDB.getLname());
+                            Log.e("hamada",""+ligneDB.getLname()+"       "+ligneDB.getLtype());
                         }
                         Log.e("hamada_value",""+best);
                     }
                 }
+                updatePheromone(bestAnt,lignes);
         }
-       updatePheromone(bestAnt);
-            double temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
+       double temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
        Log.e("temps_d'execution",""+temps);
        return bestAnt;
     }
-    public void updatePheromone(Ant bestAnt) {
-        List<LigneDB> ligneDBS = ligneDao.getLigneDbs();
+    public void updatePheromone(Ant bestAnt,List<LigneDB> ligneDBS) {
         List<LigneDB> solutionLigne = null;
+
         for (LigneDB edge : ligneDBS) {
             double delta = 0;
             int l = edge.getPhormone_index();
             double pheromone = phormoneLevel[l];
-
+           // Log.e("phormone",""+pheromone);
             if (bestAnt != null)
                 solutionLigne =  bestAnt.getSolutionLigne();
 
@@ -115,8 +114,8 @@ public class Acs extends AppCompatActivity {
             }
 
             //evaporation = 0.9325204351890948
-            pheromone = (1.0 - 0.742637634868853) * pheromone + delta;
-
+            pheromone = (1.0 - 0.842637634868853) * pheromone + 0.842637634868853 * delta;
+           // Log.e("phormone + evaporation",""+pheromone);
             if (pheromone < MIN_PHEROMONE)
                 pheromone = MIN_PHEROMONE;
 
@@ -124,6 +123,7 @@ public class Acs extends AppCompatActivity {
                 pheromone = MAX_PHEROMONE;
 
             phormoneLevel[l] = pheromone;
+           // Log.e("phormone level final",""+phormoneLevel[l]);
         }
     }
 
@@ -150,6 +150,6 @@ public class Acs extends AppCompatActivity {
         int kmInDec = Integer.valueOf(newFormat.format(km));
         double meter = valueResult % 1000;
         int meterInDec = Integer.valueOf(newFormat.format(meter));
-        return Radius * c;
+        return kmInDec;
     }
 }
