@@ -44,8 +44,8 @@ public class Acs extends AppCompatActivity {
                 phormoneLevel[i] = 0.00861821851041004;
             }
 
-            a= fullStationDao.getFullStations("16BEBCHGT");
-            b = fullStationDao.getFullStations("16HSDANST");
+            a= fullStationDao.getFullStations("16ABNAGCB");
+            b = fullStationDao.getFullStations("16BEKDRST");
             stringsArriver = ligneDao.getLigneArrive();
             stations = new ArrayList<>();
             for (int i =0;i<stringsArriver.size();i++){
@@ -55,7 +55,7 @@ public class Acs extends AppCompatActivity {
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 999;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
 
                 ants = new ArrayList<>();
                 for (int j = 0; j < 5; j++) {

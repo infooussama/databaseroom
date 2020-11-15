@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment fragment = null;
     List<LigneDB> ligneDBS,lignes;
     List<String> stringsArriver;
+    int k=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             insertFullStation();
             insertLigneAndCrossRef();
             insertTransfert();
-            //insertDistance();
         }
         /*stringsArriver = ligneDao.getLigneArrive();
         List<FullStation> stations = new ArrayList<>();
@@ -97,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
            Log.e("feto",""+ligneDB.getLname());
        }
         Log.e("feto",""+acs.getBest());
+       /*List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEB411B");
+        for (LigneDB ligneDB : ligneDBS){
+            Log.e("feto",""+ligneDB.getLname());
+            Log.e("hamada",""+ligneDB.getId_arrive());
+        }*/
         /*Graphf graphf = new Graphf();
         ArrayList<ArrayList<FullStation>> arrayLists = graphf.graph();
         Log.e("routsize",""+arrayLists.size());
@@ -229,45 +234,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void insertDistance(){
-        for (int i=0;i<fullData.getFull_stations().size();i++){
-
-            ligneDBS = ligneDao.getFullStationLignes(fullData.getFull_stations().get(i).getScode());
-
-            for (int j=0;j < ligneDBS.size();j++){
-                List<FullStation> fullStations = fullStationDao.getLineFullstations(ligneDBS.get(j).getLid());
-
-                for(int k =0 ; k < fullStations.size() ;k++){
-
-                    /*ligneDBS = ligneDao.getFullStationLignes("16BEKMBTT");
-
-                    List<FullStation> fullStations = fullStationDao.getLineFullstations("E160099A");
-                    Log.e("aaaaaaaaa",""+ligneDBS.size());
-                    Log.e("aaaaaaaaa",""+ligneDBS.get(0).getLtype());
-                    Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLid());
-                    Log.e("aaaaaaaaa",""+ligneDBS.get(1).getLtype());
-
-                    Log.e("LineFullstations",""+fullStations.size());
-
-                    Log.e("LineFullstations",""+fullStations.get(0).getStationDB().getSname());
-                    Log.e("LineFullstations",""+fullStations.get(1).getStationDB().getSname());*/
-
-                    distanceDao.insert(new Distance(fullData.getFull_stations().get(i).getScode(),
-                            fullStations.get(k).getScode(),CalculationByDistance(
-                            new LatLng(fullData.getFull_stations().get(i).getStop_lat(),fullData.getFull_stations().get(i).getStop_lon()),
-                            new LatLng(fullData.getFull_stations().get(k).getStop_lat(),fullData.getFull_stations().get(k).getStop_lon()))));
-
-                }
-
-            }
-
-        }
-
-    }
-
     public void insertLigneAndCrossRef(){
-        //Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode());
-        int k=0;
+        //Log.e("Line", ""+fullData.getFull_stations().get(0).getLines().get(0).getTerminus().getScode())
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getLines().size();j++){
                 ligneDao.insert(new LigneDB(fullData.getFull_stations().get(i).getLines().get(j).getLid(),
@@ -280,8 +248,10 @@ public class MainActivity extends AppCompatActivity {
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_name(),
                         fullData.getFull_stations().get(i).getLines().get(j).getOp_color(),
                         fullData.getFull_stations().get(i).getLines().get(j).getTerminus().getScode()));
+
                 fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef(fullData.getFull_stations().get(i).getScode(),
                         fullData.getFull_stations().get(i).getLines().get(j).getLid()));
+
             }
         }
 
@@ -300,8 +270,15 @@ public class MainActivity extends AppCompatActivity {
     public void insertTransfert(){
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getTransfers().size();j++){
-                transfertDao.insert(new TransfertDB(fullData.getFull_stations().get(i).getTransfers().get(j).getScode(),
-                        fullData.getFull_stations().get(i).getTransfers().get(j).getDist()));
+                LigneDB ligneDB = new LigneDB("P",
+                        "Deplacement a pied " +fullData.getFull_stations().get(i).getSname()+"--"+fullData.getFull_stations().get(i).getTransfers().get(j).getSname(),
+                        fullData.getFull_stations().get(i).getScode(),
+                        fullData.getFull_stations().get(i).getTransfers().get(j).getScode());
+                ligneDao.insert(ligneDB);
+                ligneDao.updateindex(k,ligneDB.getLid());
+                fullStationLigneDBCrossRefDao.insert(new FullStationLigneDBCrossRef(fullData.getFull_stations().get(i).getScode(),
+                        ligneDB.getLid()));
+                k++;
             }
         }
     }
@@ -383,26 +360,8 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
-        int Radius = 6371;// radius of earth in Km
-        double lat1 = StartP.getLatitude();
-        double lat2 = EndP.getLatitude();
-        double lon1 = StartP.getLongitude();
-        double lon2 = EndP.getLongitude();
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        double valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        return Radius * c;
-    }
+    // function to generate a random string of length n
+
+
 
 }

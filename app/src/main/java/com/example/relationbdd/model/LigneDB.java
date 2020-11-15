@@ -62,6 +62,41 @@ public class LigneDB {
         this.op_color = op_color;
         this.id_arrive = id_arrive;
     }
+    @Ignore
+    public LigneDB(String ltype, String lname, String id_depart,String id_arrive) {
+        this.lid = getAlphaNumericString(9);
+        this.ltype = ltype;
+        this.lname = lname;
+        this.id_depart = id_depart;
+        this.id_arrive = id_arrive;
+    }
+
+    static String getAlphaNumericString(int n)
+    {
+
+        // chose a Character random from this String
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789";
+
+        // create StringBuffer size of AlphaNumericString
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between
+            // 0 to AlphaNumericString variable length
+            int index
+                    = (int)(AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+
+    }
 
     public String getId_depart() {
         return id_depart;
