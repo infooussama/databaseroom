@@ -33,6 +33,7 @@ public class Acs extends AppCompatActivity {
     private static final double MIN_PHEROMONE = 0.0001;
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
+    public static double temps = 0;
 
     public Ant calcule(){
             roomDB = RoomDB.getInstance(this);
@@ -43,7 +44,7 @@ public class Acs extends AppCompatActivity {
             for(int i=0;i<phormoneLevel.length;i++) {
                 phormoneLevel[i] = 0.00861821851041004;
             }
-            a= fullStationDao.getFullStations("16ABNAGCB");
+            a= fullStationDao.getFullStations("16MADMQ1L");
             b = fullStationDao.getFullStations("16BEKDRST");
             stringsArriver = ligneDao.getLigneArrive();
             stations = new ArrayList<>();
@@ -54,11 +55,11 @@ public class Acs extends AppCompatActivity {
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 999;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 50; i++) {
 
                 ants = new ArrayList<>();
-                for (int j = 0; j < 10; j++) {
-                    ants.add(new Ant(stations,lignes,a,b));
+                for (int j = 0; j < 5; j++) {
+                    ants.add(new Ant(stations,a,b));
                 }
                 for (Ant ant : ants) {
                    Log.e("ant_value",""+ant.getId());
@@ -88,42 +89,41 @@ public class Acs extends AppCompatActivity {
                 }
                 updatePheromone(bestAnt,lignes);
         }
-       double temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
+       temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
        Log.e("temps_d'execution",""+temps);
        return bestAnt;
     }
     public void updatePheromone(Ant bestAnt,List<LigneDB> ligneDBS) {
         List<LigneDB> solutionLigne = null;
 
-        for (LigneDB edge : ligneDBS) {
-            double delta = 0;
-            int l = edge.getPhormone_index();
-            double pheromone = phormoneLevel[l];
-           // Log.e("phormone",""+pheromone);
-            if (bestAnt != null)
-                solutionLigne =  bestAnt.getSolutionLigne();
+        if (bestAnt != null) {
+            solutionLigne = bestAnt.getSolutionLigne();
+            for (LigneDB edge : ligneDBS) {
+                double delta = 0;
+                int l = edge.getPhormone_index();
+                double pheromone = phormoneLevel[l];
+                // Log.e("phormone",""+pheromone);
 
-            int i;
-            for(i = 0;i<solutionLigne.size();i++){
-                if(solutionLigne.get(i).getLid().equals(edge.getLid())){
-                    break;
+                int i;
+                for (i = 0; i < solutionLigne.size(); i++) {
+                    if (solutionLigne.get(i).getLid().equals(edge.getLid())) {
+                        delta = 1.0 / solutionLigne.size();
+                        break;
+                    }
                 }
+
+                //evaporation = 0.9325204351890948
+                pheromone = (1.0 - 0.842637634868853) * pheromone + 0.842637634868853 * delta;
+                // Log.e("phormone + evaporation",""+pheromone);
+                if (pheromone < MIN_PHEROMONE)
+                    pheromone = MIN_PHEROMONE;
+
+                if (pheromone > MAX_PHEROMONE)
+                    pheromone = MAX_PHEROMONE;
+
+                phormoneLevel[l] = pheromone;
+                // Log.e("phormone level final",""+phormoneLevel[l]);
             }
-            if (i!=solutionLigne.size()){
-                delta = 1.0 / solutionLigne.size();
-            }
-
-            //evaporation = 0.9325204351890948
-            pheromone = (1.0 - 0.842637634868853) * pheromone + 0.842637634868853 * delta;
-           // Log.e("phormone + evaporation",""+pheromone);
-            if (pheromone < MIN_PHEROMONE)
-                pheromone = MIN_PHEROMONE;
-
-            if (pheromone > MAX_PHEROMONE)
-                pheromone = MAX_PHEROMONE;
-
-            phormoneLevel[l] = pheromone;
-           // Log.e("phormone level final",""+phormoneLevel[l]);
         }
     }
 

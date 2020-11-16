@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.relationbdd.adapter.DetailMetroListAdapter;
+import com.example.relationbdd.adapter.DetailTeleListAdapter;
 import com.example.relationbdd.dao.LigneDao;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.LigneAndFullStationArriver;
@@ -34,7 +35,7 @@ public class DetailTeleStation extends AppCompatActivity {
     MapView mapView;
     RecyclerView recyclerView;
     RoomDB database;
-    DetailMetroListAdapter adapter;
+    DetailTeleListAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     LigneDao ligneDao;
     List<LigneAndFullStationArriver> LigneAndFullStationArriver = new ArrayList<>();
@@ -61,7 +62,7 @@ public class DetailTeleStation extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new DetailMetroListAdapter(this,LigneAndFullStationArriver);
+        adapter = new DetailTeleListAdapter(this,LigneAndFullStationArriver);
         recyclerView.setAdapter(adapter);
 
         mapView = findViewById(R.id.mapView);

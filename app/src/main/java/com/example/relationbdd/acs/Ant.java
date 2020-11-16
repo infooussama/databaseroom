@@ -34,9 +34,11 @@ public class Ant extends AppCompatActivity {
     List<LigneDB> dbs;
     public static double cout;
     double distance;
-    public Ant(List<FullStation> stations, List<LigneDB> lignes, FullStation start, FullStation end){
+    int co=0;
+    public static double alpha = 0.040331845764;
+    public static double beta  =  2.5138228981984807;
+    public Ant(List<FullStation> stations, FullStation start, FullStation end){
         this.stations = stations;
-        this.lignes = lignes;
         this.start = start;
         this.currentStations = start;
         this.end = end;
@@ -71,10 +73,13 @@ public class Ant extends AppCompatActivity {
     public int getId() {
         return id;
     }
-
     public void move(){
         List<LigneDB> adjacentLignes = ligneDao.getFullStationLignes(currentStations.getScode());
         possibleMoves = new ArrayList<>();
+        double pourcentage = 0;
+        double sum = 0;
+        List<Double> problist = new ArrayList<>();
+
         for(LigneDB e : adjacentLignes){
             int i;
             for(i = 0;i<dbs.size();i++){
@@ -93,32 +98,58 @@ public class Ant extends AppCompatActivity {
 
             int k;
             for(k = 0;k<visitedLigne.size();k++){
-                if(visitedLigne.get(k).getLid().equals(e.getLid())){
+                if(visitedLigne.get(k).getLid().equals(e.getLid()) || visitedStation.get(k).getScode().equals(e.getId_arrive())){
                     break;
                 }
             }
 
-            int j;
+            /*int j;
             for(j = 0;j<visitedStation.size();j++){
                 if(visitedStation.get(j).getScode().equals(e.getId_arrive())){
                     break;
                 }
-            }
+            }*/
+            //Log.e("MEGA", "  "+visitedLigne.size()+ " "+ visitedStation.size());
+            double proba = 0;
 
-            if(k==visitedLigne.size() && j == visitedStation.size() && !e.getId_arrive().equals(currentStations.getScode())){
+            if(k == visitedLigne.size() && !visitedStation.get(visitedStation.size() - 1).getScode().equals(e.getId_arrive()) && !e.getId_arrive().equals(currentStations.getScode())){
                 possibleMoves.add(e);
+                int j = e.getPhormone_index();
+                if(e.getLtype().equals("M") || e.getLtype().equals("T")){
+                    pourcentage = 0.03;
+                }
+                if(e.getLtype().equals("B")){
+                    pourcentage = 0.01;
+                }
+                if(e.getLtype().equals("L")){
+                    pourcentage = 0.03;
+                }
+                if(e.getLtype().equals("P")){
+                    pourcentage = 0.9;
+                }
+                FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
+                proba = Math.pow(Acs.phormoneLevel[k], alpha) * Math.pow(1.0/ (CalculationByDistance(
+                        new LatLng(end.getStop_lat(),end.getStop_lon()),
+                        new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),beta
+                );
+                sum += proba;
+                problist.add(proba);
             }
+            //possibleMoves.get(possibleMoves.size() - 1).setProbability(proba);
 
         }
 
         LigneDB next = null;
+
         if(possibleMoves.size() == 0){
             reset(start);
-            move();
+            //walk();
+            //Log.e("resetttttttttttttttttttttttttttttt",""+co);
+            //co++;
         }
         else{
-            List<Double> prob2 = compute_probabilitie(possibleMoves);
-            next = choice(possibleMoves,prob2);
+            //List<Double> prob2 = compute_probabilitie(possibleMoves, sum);
+            next = choice(possibleMoves, problist, sum);
             String sa = next.getId_arrive();
             FullStation fullStation = fullStationDao.getFullStations(sa);
             visitedStation.add(fullStation);
@@ -150,33 +181,13 @@ public class Ant extends AppCompatActivity {
         }
     }
 
-    private List<Double> compute_probabilitie(List<LigneDB> possiblemove) {
+    private List<Double> compute_probabilitie(List<LigneDB> possiblemove, double sum) {
 
         List<Double> probList = new ArrayList<>();
         double pheromone = 0;
         double heuristic = 0;
-        double sum = 0;
         double pourcentage = 0;
-        for(LigneDB e : possiblemove){
-            int k = e.getPhormone_index();
-                if(e.getLtype().equals("M") || e.getLtype().equals("T")){
-                    pourcentage = 0.03;
-                }
-                if(e.getLtype().equals("B")){
-                    pourcentage = 0.01;
-                }
-                if(e.getLtype().equals("L")){
-                    pourcentage = 0.03;
-                }
-                if(e.getLtype().equals("P")){
-                    pourcentage = 0.9;
-                }
-                FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
-                sum += Math.pow(Acs.phormoneLevel[k], 2.0040331845764) * Math.pow(1.0/ (CalculationByDistance(
-                        new LatLng(end.getStop_lat(),end.getStop_lon()),
-                        new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),2.5138228981984807
-                );
-            }
+
         if (sum == 0)
             sum = 1;
         double some = 0;
@@ -195,17 +206,17 @@ public class Ant extends AppCompatActivity {
                 pourcentage = 0.9;
             }
             FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
-            pheromone = Math.pow(Acs.phormoneLevel[k],2.0040331845764);
+            pheromone = Math.pow(Acs.phormoneLevel[k],alpha);
             heuristic = Math.pow(1.0/ (CalculationByDistance(
                     new LatLng(end.getStop_lat(),end.getStop_lon()),
-                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),2.5138228981984807
+                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),beta
             );
-            Log.e("phormone puissance alpha",""+pheromone);
+           /* Log.e("phormone puissance alpha",""+pheromone);
 
             Log.e("distance",""+1.0/ (CalculationByDistance(
                     new LatLng(end.getStop_lat(),end.getStop_lon()),
                     new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage));
-            Log.e("heuristic",""+heuristic);
+            Log.e("heuristic",""+heuristic);*/
 
             double prob = (pheromone * heuristic) / sum;
             //Log.e("prob",""+prob);
@@ -214,11 +225,11 @@ public class Ant extends AppCompatActivity {
             probList.add(prob);
 
         }
-        Log.e("some",""+some);
+        //Log.e("some",""+some);
         return probList;
     }
 
-    private LigneDB choice(List<LigneDB> possiblemove, List<Double> probList) {
+    private LigneDB choice(List<LigneDB> possiblemove, List<Double> probList, double sum) {
         Random rnd = new Random();
         double st = rnd.nextDouble();
         double r = rnd.nextDouble();
@@ -239,7 +250,7 @@ public class Ant extends AppCompatActivity {
         }
         double total = 0;
         for (int j = 0; j < probList.size(); j++){
-            total += probList.get(j);
+            total += probList.get(j)/sum;
             if (total >= r)
                 return possiblemove.get(j);
         }

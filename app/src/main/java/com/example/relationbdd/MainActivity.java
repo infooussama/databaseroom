@@ -90,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
         lignes = ligneDao.getLigneDbs();
         Ant ant = new Ant(stations,lignes,a,b);
         ant.walk();*/
-        Acs acs = new Acs();
+       /* Acs acs = new Acs();
        Ant result = acs.calcule();
        List<LigneDB> solu = result.getSolutionLigne();
        for (LigneDB ligneDB : solu){
            Log.e("feto",""+ligneDB.getLname());
        }
-        Log.e("feto",""+acs.getBest());
+        Log.e("feto",""+acs.getBest());*/
        /*List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16BEB411B");
         for (LigneDB ligneDB : ligneDBS){
             Log.e("feto",""+ligneDB.getLname());
