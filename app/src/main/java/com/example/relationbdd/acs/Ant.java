@@ -1,6 +1,8 @@
 package com.example.relationbdd.acs;
 
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.relationbdd.CalculeItineraire;
@@ -12,6 +14,7 @@ import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneDB;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +23,9 @@ import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Ant extends AppCompatActivity {
+public class Ant extends AppCompatActivity implements Serializable {
     private List<FullStation> stations,visitedStation;
-    private List<LigneDB> lignes,solutionLigne,visitedLigne;
+    private List<LigneDB> solutionLigne,visitedLigne;
     private FullStation currentStations,end,start;
     private static final double Q_0 = 0.1;
     private final int id;
@@ -36,7 +39,8 @@ public class Ant extends AppCompatActivity {
     double distance;
     int co=0;
     public static double alpha = 0.040331845764;
-    public static double beta  =  2.5138228981984807;
+    public static double beta  = 2.5138228981984807;
+
     public Ant(List<FullStation> stations, FullStation start, FullStation end){
         this.stations = stations;
         this.start = start;
@@ -283,5 +287,6 @@ public class Ant extends AppCompatActivity {
     public List<LigneDB> getSolutionLigne() {
         return solutionLigne;
     }
+
 }
 

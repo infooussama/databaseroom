@@ -11,8 +11,6 @@ import android.util.Log;
 
 import com.example.relationbdd.JsonData.FullData;
 import com.example.relationbdd.JsonData.StationData;
-import com.example.relationbdd.acs.Acs;
-import com.example.relationbdd.acs.Ant;
 import com.example.relationbdd.acs.Graphf;
 import com.example.relationbdd.dao.DistanceDao;
 import com.example.relationbdd.dao.FullStationDao;
@@ -44,6 +42,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     RoomDB roomDB;
     FullData fullData;
     StationData stationData;
@@ -80,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
             insertLigneAndCrossRef();
             insertTransfert();
         }
+        /*Graphf graphf = new Graphf();
+        List<LigneDB> ligneDBS = graphf.graph();
+
+        for (LigneDB ligneDB : ligneDBS){
+            Log.e("feto",""+ligneDB.getLname());
+        }*/
+
+
         /*stringsArriver = ligneDao.getLigneArrive();
         List<FullStation> stations = new ArrayList<>();
         for (int i =0;i<stringsArriver.size();i++){

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.relationbdd.adapter.BusListAdapter;
@@ -40,12 +42,20 @@ public class DetailBusStation extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     LigneDao ligneDao;
     List<LigneAndFullStationArriver> LigneAndFullStationArriver = new ArrayList<>();
+    ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.access_token));
         setContentView(R.layout.activity_detail_bus_station);
         textView = findViewById(R.id.station_name);
+        back = findViewById(R.id.img);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         Intent intent = getIntent();
         String code = intent.getStringExtra("station_code");
         String name = intent.getStringExtra("station_name");

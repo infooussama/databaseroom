@@ -11,13 +11,14 @@ import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneDB;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Acs extends AppCompatActivity {
+public class Acs extends AppCompatActivity{
 
     List<Ant> ants;
     List<FullStation> stations;
@@ -34,18 +35,20 @@ public class Acs extends AppCompatActivity {
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
     public static double temps = 0;
+    public static double evaporation  = 0.842637634868853;
+    public static double phormoneinitial  =  0.00861821851041004;
 
-    public Ant calcule(){
+    public Ant calcule(String depart,String arriver){
             roomDB = RoomDB.getInstance(this);
             fullStationDao = roomDB.fullStationDao();
             ligneDao = roomDB.ligneDao();
             lignes = ligneDao.getLigneDbs();
             phormoneLevel = new double[lignes.size()];
             for(int i=0;i<phormoneLevel.length;i++) {
-                phormoneLevel[i] = 0.00861821851041004;
+                phormoneLevel[i] = phormoneinitial;
             }
-            a= fullStationDao.getFullStations("16MADMQ1L");
-            b = fullStationDao.getFullStations("16BEKDRST");
+            a= fullStationDao.getFullStations(depart);
+            b = fullStationDao.getFullStations(arriver);
             stringsArriver = ligneDao.getLigneArrive();
             stations = new ArrayList<>();
             for (int i =0;i<stringsArriver.size();i++){
@@ -55,27 +58,16 @@ public class Acs extends AppCompatActivity {
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 999;
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 5; i++) {
 
                 ants = new ArrayList<>();
-                for (int j = 0; j < 5; j++) {
+                for (int j = 0; j < 30; j++) {
                     ants.add(new Ant(stations,a,b));
                 }
                 for (Ant ant : ants) {
                    Log.e("ant_value",""+ant.getId());
                    ant.walk();
                    if(ant != null){
-                       List<FullStation> visited = ant.getVisitedStation();
-                       /*double some=0.0,distance;
-                       for(int j = 0;j<visited.size();j++){
-                           if(j<visited.size()-1){
-                               distance = CalculationByDistance(new LatLng(visited.get(j).getStop_lat(),
-                                               visited.get(j).getStop_lon()),
-                                       new LatLng(visited.get(j+1).getStop_lat(),
-                                               visited.get(j+1).getStop_lon()));
-                               some = distance + some;
-                           }
-                       }*/
                         if (best > Ant.cout) {
                             bestAnt = ant;
                             best = Ant.cout;
@@ -113,7 +105,7 @@ public class Acs extends AppCompatActivity {
                 }
 
                 //evaporation = 0.9325204351890948
-                pheromone = (1.0 - 0.842637634868853) * pheromone + 0.842637634868853 * delta;
+                pheromone = (1.0 - evaporation) * pheromone + delta;
                 // Log.e("phormone + evaporation",""+pheromone);
                 if (pheromone < MIN_PHEROMONE)
                     pheromone = MIN_PHEROMONE;

@@ -30,6 +30,9 @@ public interface LigneDao {
     @Query("SELECT * FROM LigneDB")
     List<LigneDB> getLigneDbs();
 
+    @Query("SELECT * FROM LigneDB WHERE ltype NOT LIKE :p")
+    List<LigneDB> getLigneDbsWithoutP(String p);
+
     @Query("SELECT * FROM LigneDB INNER JOIN FullStationLigneDBCrossRef ON LigneDB.lid = FullStationLigneDBCrossRef.lid WHERE FullStationLigneDBCrossRef.scode=:scode")
     public List<LigneDB> getFullStationLignes(String scode);
 

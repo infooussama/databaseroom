@@ -18,6 +18,7 @@ public class Graphf extends AppCompatActivity {
 
     List<FullStation> stations;
     List<FullStation> chosenStation,unused,unused2;
+    List<LigneDB> results = new ArrayList<>();
     int ligneLenght,lenght=0;
     FullStationDao fullStationDao;
     LigneDao ligneDao;
@@ -27,11 +28,11 @@ public class Graphf extends AppCompatActivity {
     Random r = new Random();
     List<LigneDB> ligneDBS;
     FullStation item,item2;
-    int index,reverse,count;
+    int index,reverse,count,c = 0;
 
     List<String> stringsArriver;
 
-    public ArrayList<ArrayList<FullStation>> graph(){
+    public List<LigneDB> graph(){
         roomDB = RoomDB.getInstance(this);
         fullStationDao = roomDB.fullStationDao();
         ligneDao = roomDB.ligneDao();
@@ -42,15 +43,17 @@ public class Graphf extends AppCompatActivity {
         }
         chosenStation = new ArrayList<>();
         routes = new ArrayList<ArrayList<FullStation>>();
-        for(count = 0; count<10 ;count++){
+        for(count = 0; count<92 ;count++){
             lenght = 0;
             nodes = new ArrayList<FullStation>();
-            ligneLenght = r.nextInt(11 - 7) + 7;
+            //ligneLenght = r.nextInt(11 - 7) + 7;
+            ligneLenght = 2;
             if(count == 0){
                 index = r.nextInt(stations.size());
                 item = stations.get(index);
                 nodes.add(item);
                 routes.add(nodes);
+                c++;
             }else {
                 index = r.nextInt(stations.size());
                 item = stations.get(index);
@@ -96,6 +99,14 @@ public class Graphf extends AppCompatActivity {
                     index = r.nextInt(unused2.size());
                     item2 = unused2.get(index);
                     routes.get(count).add(item2);
+                    c++;
+                    List<LigneDB> list = ligneDao.getFullStationLignes(item.getScode());
+                    for (int i=0 ; i<list.size() ; i++){
+                        if(list.get(i).getId_arrive().equals(item2.getScode())){
+                            results.add(list.get(i));
+                            break;
+                        }
+                    }
                     item = item2;
                     chosenStation.add(item2);
                 }else {
@@ -105,6 +116,7 @@ public class Graphf extends AppCompatActivity {
                 }
             }
         }
-        return routes;
+        Log.e("count station",""+c);
+        return results;
     }
 }

@@ -1,12 +1,14 @@
 package com.example.relationbdd.model;
 
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class StationDB {
+public class StationDB implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int idStation;

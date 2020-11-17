@@ -3,57 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".DetailBusStation">
+    android:layout_height="match_parent"
+    tools:context=".ShowResultInmaps">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageButton
-            android:id="@+id/img"
+        android:layout_height="wrap_content">
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
-            android:background="#00FFFFFF"
             android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/station_name"
-            android:layout_width="340dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="60dp"
+            android:layout_centerHorizontal="true"
             android:text="dadadadada"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textColor="#000000"/>
     </RelativeLayout>
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         mapbox:mapbox_cameraZoom="10"
         mapbox:mapbox_cameraTargetLat="36.752887"
         mapbox:mapbox_cameraTargetLng="3.042048"
         />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#343437"
-        android:text="Destinations au depart de cette station"
-        android:textColor="#ffffff"
-        android:textSize="16sp"
-        android:textAlignment="center"
-        android:padding="8dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler_view"
-            android:layout_marginTop="8dp"
-            tools:listitem="@layout/list_row_main"/>
-
-
 
 </LinearLayout>

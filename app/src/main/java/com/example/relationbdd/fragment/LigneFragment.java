@@ -86,7 +86,7 @@ public class LigneFragment extends Fragment {
         searchView = view.findViewById(R.id.search_bar);
         recyclerView = view.findViewById(R.id.recycler_view);
         database = RoomDB.getInstance(getActivity());
-        dataList = database.ligneDao().getLigneDbs();
+        dataList = database.ligneDao().getLigneDbsWithoutP("P");
         Log.e("nbr ligne", ""+dataList.size());
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);

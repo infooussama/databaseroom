@@ -81,11 +81,24 @@
         android:textSize="16sp"
         android:textStyle="bold"/>
 
+    <Button
+        android:id="@+id/show_route"
+        android:layout_below="@+id/time"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#e75748"
+        android:text="show in maps"
+        android:textColor="#FFFFFF"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
         android:layout_marginTop="8dp"
         tools:listitem="@layout/list_row_main"/>
+
+
 
 </LinearLayout>

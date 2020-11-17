@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RelationBdd">
+        <activity android:name=".ShowResultInmaps"></activity>
         <activity android:name=".DetailLigne" />
         <activity android:name=".DetailTeleStation" />
         <activity android:name=".CalculeItineraire" />
