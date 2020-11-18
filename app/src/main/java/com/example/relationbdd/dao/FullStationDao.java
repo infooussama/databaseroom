@@ -31,12 +31,16 @@ public interface FullStationDao {
     @Query("SELECT * FROM [FullStation] WHERE scode =:scode")
     public FullStation getFullStations(String scode);
 
+    @Query("SELECT * FROM [FullStation] WHERE sname =:sname")
+    public FullStation getFullStationsWithName(String sname);
+
     @Transaction
     @Query("SELECT * FROM FullStation")
     public List<TransfertAndFullStation> getStationWithTransfert();
 
     @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid")
     public List<FullStation> getLineFullstations(String lid);
+
 
     @Query("SELECT COUNT(*) FROM FullStation")
     public int getCountFullstations();

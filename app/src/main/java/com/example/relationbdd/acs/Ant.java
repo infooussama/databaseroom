@@ -27,7 +27,7 @@ public class Ant extends AppCompatActivity implements Serializable {
     private List<FullStation> stations,visitedStation;
     private List<LigneDB> solutionLigne,visitedLigne;
     private FullStation currentStations,end,start;
-    private static final double Q_0 = 0.1;
+    private static final double Q_0 = 0.05;
     private final int id;
     private static int numAnts = 0;
     RoomDB roomDB;
@@ -35,7 +35,7 @@ public class Ant extends AppCompatActivity implements Serializable {
     LigneDao ligneDao;
     List<LigneDB> possibleMoves;
     List<LigneDB> dbs;
-    public static double cout;
+    public double cout;
     double distance;
     int co=0;
     public static double alpha = 0.040331845764;
@@ -120,16 +120,16 @@ public class Ant extends AppCompatActivity implements Serializable {
                 possibleMoves.add(e);
                 int j = e.getPhormone_index();
                 if(e.getLtype().equals("M") || e.getLtype().equals("T")){
-                    pourcentage = 0.03;
+                    pourcentage = 0.15;
                 }
                 if(e.getLtype().equals("B")){
-                    pourcentage = 0.01;
+                    pourcentage = 0.25;
                 }
                 if(e.getLtype().equals("L")){
-                    pourcentage = 0.03;
+                    pourcentage = 0.15;
                 }
                 if(e.getLtype().equals("P")){
-                    pourcentage = 0.9;
+                    pourcentage = 0.3;
                 }
                 FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
                 proba = Math.pow(Acs.phormoneLevel[k], alpha) * Math.pow(1.0/ (CalculationByDistance(
@@ -162,7 +162,7 @@ public class Ant extends AppCompatActivity implements Serializable {
                             currentStations.getStop_lon()),
                     new LatLng(fullStation.getStop_lat(),
                             fullStation.getStop_lon()));
-            cout = cout + distance;
+            cout = cout + distance + 2;
             String s = oppositeEnd(next,currentStations);
             currentStations = fullStationDao.getFullStations(s);
             visitedLigne.add(next);
@@ -185,54 +185,6 @@ public class Ant extends AppCompatActivity implements Serializable {
         }
     }
 
-    private List<Double> compute_probabilitie(List<LigneDB> possiblemove, double sum) {
-
-        List<Double> probList = new ArrayList<>();
-        double pheromone = 0;
-        double heuristic = 0;
-        double pourcentage = 0;
-
-        if (sum == 0)
-            sum = 1;
-        double some = 0;
-        for(LigneDB e : possiblemove){
-            int k = e.getPhormone_index();
-            if(e.getLtype().equals("M") || e.getLtype().equals("T")){
-                pourcentage = 0.03;
-            }
-            if(e.getLtype().equals("B")){
-                pourcentage = 0.01;
-            }
-            if(e.getLtype().equals("L")){
-                pourcentage = 0.03;
-            }
-            if(e.getLtype().equals("P")){
-                pourcentage = 0.9;
-            }
-            FullStation arrive = fullStationDao.getFullStations(e.getId_arrive());
-            pheromone = Math.pow(Acs.phormoneLevel[k],alpha);
-            heuristic = Math.pow(1.0/ (CalculationByDistance(
-                    new LatLng(end.getStop_lat(),end.getStop_lon()),
-                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage),beta
-            );
-           /* Log.e("phormone puissance alpha",""+pheromone);
-
-            Log.e("distance",""+1.0/ (CalculationByDistance(
-                    new LatLng(end.getStop_lat(),end.getStop_lon()),
-                    new LatLng(arrive.getStop_lat(),arrive.getStop_lon()))*pourcentage));
-            Log.e("heuristic",""+heuristic);*/
-
-            double prob = (pheromone * heuristic) / sum;
-            //Log.e("prob",""+prob);
-            some = prob + some;
-            //Log.e("some",""+some);
-            probList.add(prob);
-
-        }
-        //Log.e("some",""+some);
-        return probList;
-    }
-
     private LigneDB choice(List<LigneDB> possiblemove, List<Double> probList, double sum) {
         Random rnd = new Random();
         double st = rnd.nextDouble();
@@ -253,7 +205,7 @@ public class Ant extends AppCompatActivity implements Serializable {
             return possiblemove.get(indiceMax);
         }
         double total = 0;
-        for (int j = 0; j < probList.size(); j++){
+        for (int j = 0; j < probList.size() - 1; j++){
             total += probList.get(j)/sum;
             if (total >= r)
                 return possiblemove.get(j);
@@ -277,12 +229,7 @@ public class Ant extends AppCompatActivity implements Serializable {
                 * Math.sin(dLon / 2);
         double c = 2 * Math.asin(Math.sqrt(a));
         double valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        return kmInDec;
+        return valueResult ;
     }
     public List<LigneDB> getSolutionLigne() {
         return solutionLigne;

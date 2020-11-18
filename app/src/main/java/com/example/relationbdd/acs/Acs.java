@@ -31,12 +31,12 @@ public class Acs extends AppCompatActivity{
     double best;
     public static double[] phormoneLevel;
     private static final double MAX_PHEROMONE = 1;
-    private static final double MIN_PHEROMONE = 0.0001;
+    private static final double MIN_PHEROMONE = 0.001;
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
     public static double temps = 0;
-    public static double evaporation  = 0.842637634868853;
-    public static double phormoneinitial  =  0.00861821851041004;
+    public static double evaporation  = 0.542637634868853;
+    public static double phormoneinitial  =  0.08861821851041004;
 
     public Ant calcule(String depart,String arriver){
             roomDB = RoomDB.getInstance(this);
@@ -57,33 +57,33 @@ public class Acs extends AppCompatActivity{
 
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
-            best = 999;
-            for (int i = 0; i < 5; i++) {
-
+            best = 10000;
+            for (int i = 0; i < 100; i++) {
+                Ant bestItAnt = null;
+                double bestItAntCout = 999;
                 ants = new ArrayList<>();
-                for (int j = 0; j < 30; j++) {
+                for (int j = 0; j < 7; j++) {
                     ants.add(new Ant(stations,a,b));
-                }
-                for (Ant ant : ants) {
-                   Log.e("ant_value",""+ant.getId());
-                   ant.walk();
-                   if(ant != null){
-                        if (best > Ant.cout) {
-                            bestAnt = ant;
-                            best = Ant.cout;
-                        }
-                        List<LigneDB> solu = bestAnt.getSolutionLigne();
+                    ants.get(j).walk();
+                    if (bestItAntCout > ants.get(j).cout) {
+                        bestItAnt = ants.get(j);
+                        bestItAntCout = ants.get(j).cout;
+                        List<LigneDB> solu = bestItAnt.getSolutionLigne();
                         for (LigneDB ligneDB : solu){
                             Log.e("hamada",""+ligneDB.getLname()+"       "+ligneDB.getLtype());
                         }
-                        Log.e("hamada_value",""+best);
+                        Log.e("hamada_value",""+bestItAntCout);
                     }
                 }
-                updatePheromone(bestAnt,lignes);
-        }
-       temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
-       Log.e("temps_d'execution",""+temps);
-       return bestAnt;
+                if (best > bestItAnt.cout) {
+                    bestAnt = bestItAnt;
+                    best = bestItAnt.cout;
+                }
+                updatePheromone(bestItAnt,lignes);
+            }
+            temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
+            Log.e("temps_d'execution",""+temps);
+            return bestAnt;
     }
     public void updatePheromone(Ant bestAnt,List<LigneDB> ligneDBS) {
         List<LigneDB> solutionLigne = null;
@@ -105,7 +105,7 @@ public class Acs extends AppCompatActivity{
                 }
 
                 //evaporation = 0.9325204351890948
-                pheromone = (1.0 - evaporation) * pheromone + delta;
+                pheromone = (1.0 - evaporation) * pheromone + evaporation * delta;
                 // Log.e("phormone + evaporation",""+pheromone);
                 if (pheromone < MIN_PHEROMONE)
                     pheromone = MIN_PHEROMONE;
@@ -137,11 +137,6 @@ public class Acs extends AppCompatActivity{
                 * Math.sin(dLon / 2);
         double c = 2 * Math.asin(Math.sqrt(a));
         double valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        return kmInDec;
+        return valueResult;
     }
 }

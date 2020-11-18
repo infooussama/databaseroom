@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.example.relationbdd.acs.Acs;
 import com.example.relationbdd.acs.Ant;
 import com.example.relationbdd.adapter.DetailMetroListAdapter;
 import com.example.relationbdd.adapter.DetailResultCalculItenirair;
+import com.example.relationbdd.dao.FullStationDao;
+import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneDB;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -36,18 +39,23 @@ public class CalculeItineraire extends AppCompatActivity{
     DetailResultCalculItenirair adapter;
     Ant ant;
     String codea,coded;
-
+    ImageButton swap;
+    String name,namedes;
+    RoomDB roomDB;
+    FullStationDao fullStationDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calcule_itineraire);
-
+        roomDB = RoomDB.getInstance(this);
+        fullStationDao = roomDB.fullStationDao();
         depart = findViewById(R.id.depart);
         destination = findViewById(R.id.destination);
         destionationText = findViewById(R.id.destinationtext);
         departText = findViewById(R.id.departtext);
         calcule = findViewById(R.id.search);
         show_route = findViewById(R.id.show_route);
+        swap = findViewById(R.id.swap);
         time = findViewById(R.id.time);
         show_route.setEnabled(false);
         show_route.setBackgroundColor(Color.parseColor("#EEEEEE"));
@@ -56,14 +64,18 @@ public class CalculeItineraire extends AppCompatActivity{
 
         Intent intent = getIntent();
         coded = intent.getStringExtra("station_code");
-        String name = intent.getStringExtra("station_name");
+        namedes = intent.getStringExtra("station_name");
         double lat = intent.getDoubleExtra("station_lat",0);
         double lon = intent.getDoubleExtra("station_lon",0);
-        destionationText.setText(name);
-
+        /*String s = intent.getStringExtra("marker");
+        FullStation fullStation = fullStationDao.getFullStations(s);
+        destionationText.setText(namedes);
+        destionationText.setText(fullStation.getScode());*/
+        destionationText.setText(namedes);
         depart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(CalculeItineraire.this, ListStation.class);
                 intent.putExtra("code",1);
                 CalculeItineraire.this.startActivityForResult(intent, 0);
@@ -102,6 +114,17 @@ public class CalculeItineraire extends AppCompatActivity{
             }
         });
 
+        swap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                destionationText.setText(name);
+                departText.setText(namedes);
+                String tmp = codea;
+                codea = coded;
+                coded = tmp;
+            }
+        });
+
     }
 
 
@@ -112,7 +135,7 @@ public class CalculeItineraire extends AppCompatActivity{
         if (requestCode == 0) {
             if(resultCode == Activity.RESULT_OK){
                 codea = data.getStringExtra("station_code");
-                String name = data.getStringExtra("station_name");
+                name = data.getStringExtra("station_name");
                 double lat = data.getDoubleExtra("station_lat",0);
                 double lon = data.getDoubleExtra("station_lon",0);
                 departText.setText(name);

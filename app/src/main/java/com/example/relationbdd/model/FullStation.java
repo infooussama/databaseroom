@@ -27,6 +27,7 @@ public class FullStation implements Serializable {
     @ColumnInfo(name="post_name")
     private String post_name;
 
+
     @Embedded
     private StationDB stationDB;
 

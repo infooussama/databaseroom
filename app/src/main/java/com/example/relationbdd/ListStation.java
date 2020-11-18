@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import com.example.relationbdd.adapter.BusListAdapter;
@@ -36,11 +38,17 @@ public class ListStation extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         database = RoomDB.getInstance(this);
         dataList = database.fullStationDao().getAllStations();
-        //Log.e("nbr ligne", ""+dataList.size());
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         adapter = new ListStationAdapter(this,dataList);
         recyclerView.setAdapter(adapter);
+        this.findViewById(R.id.fab_location_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Mylocation.class);
+                startActivity(intent);
+            }
+        });
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
