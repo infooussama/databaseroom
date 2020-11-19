@@ -27,6 +27,8 @@ public class FullStation implements Serializable {
     @ColumnInfo(name="post_name")
     private String post_name;
 
+    @ColumnInfo(name="hasTrransfer")
+    private boolean hasTrransfer;
 
     @Embedded
     private StationDB stationDB;
@@ -40,6 +42,14 @@ public class FullStation implements Serializable {
         this.stop_lon = stop_lon;
         this.post_name = post_name;
         this.stationDB = stationDB;
+    }
+
+    public boolean isHasTrransfer() {
+        return hasTrransfer;
+    }
+
+    public void setHasTrransfer(boolean hasTrransfer) {
+        this.hasTrransfer = hasTrransfer;
     }
 
     @NonNull

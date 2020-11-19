@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="400dp"
         android:background="#343437">
 
         <RelativeLayout
@@ -43,31 +43,116 @@
                 android:src="@drawable/ic_swap" />
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/destination"
+        android:id="@+id/destination"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/card_2"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/depart"
+        android:elevation="8dp"
+        >
+        <TextView
+            android:id="@+id/destinationtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="Choisissez votre destination"
+            android:textSize="17sp"/>
+    </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/alpha"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/card_2"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@+id/depart"
-            android:elevation="8dp"
-            >
-            <TextView
-                android:id="@+id/destinationtext"
-                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/destination">
+            <EditText
+                android:id="@+id/alphac"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:text="Choisissez votre destination"
-                android:textSize="17sp"/>
-        </RelativeLayout>
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="Alpha"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+            <EditText
+                android:id="@+id/beta"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="Beta"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/phormone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/alpha">
+
+            <EditText
+                android:id="@+id/phormonelvl"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="Phormone lvl"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+            <EditText
+                android:id="@+id/evaporation"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="evaporation"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/phormone">
+
+            <EditText
+                android:id="@+id/iteration"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="iteration"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+            <EditText
+                android:id="@+id/numeroant"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:hint="numero ant"
+                android:textColor="#ffffff"
+                android:textColorHint="#ffffff"
+                android:background="@drawable/card_5"/>
+
+        </LinearLayout>
         <Button
             android:id="@+id/search"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/destination"
             android:layout_width="350dp"
             android:layout_height="50dp"
+            android:layout_below="@+id/ant"
             android:layout_centerHorizontal="true"
             android:backgroundTint="#e75748"
             android:text="Recherche"

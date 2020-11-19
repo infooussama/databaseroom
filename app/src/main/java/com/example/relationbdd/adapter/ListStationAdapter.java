@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.fragment.ItineraireFragment;
 import com.example.relationbdd.model.FullStation;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +37,14 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
     private List<FullStation> filtredataList;
     int c=2;
     private int intentCode;
+    private FloatingActionButton button;
 
-    public ListStationAdapter(Activity context, List<FullStation> dataList){
+    public ListStationAdapter(Activity context, List<FullStation> dataList, FloatingActionButton button){
         this.context = context;
         this.dataList = dataList;
         this.filtredataList = dataList;
         this.intentCode = this.context.getIntent().getIntExtra("code", -1);
+        this.button = button;
         notifyDataSetChanged();
     }
     @NonNull
@@ -57,6 +61,9 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
         database = RoomDB.getInstance(context);
         holder.textView.setText(data.getStationDB().getSname());
         holder.textView2.setText(data.getStationDB().getCname());
+        if(intentCode == 1){
+            button.setVisibility(View.VISIBLE);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +77,7 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
                     context.startActivity(intent);
                 }
                 if(intentCode == 1){
+                    button.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent();
                     intent.putExtra("station_code",filtredataList.get(position).getScode());
                     intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());

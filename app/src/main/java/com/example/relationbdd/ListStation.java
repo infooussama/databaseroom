@@ -10,12 +10,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.relationbdd.adapter.BusListAdapter;
 import com.example.relationbdd.adapter.ListStationAdapter;
 import com.example.relationbdd.database.RoomDB;
 import com.example.relationbdd.model.FullStation;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class ListStation extends AppCompatActivity {
     ListStationAdapter adapter;
     EditText searchView;
     CharSequence search="";
+    FloatingActionButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,10 @@ public class ListStation extends AppCompatActivity {
         dataList = database.fullStationDao().getAllStations();
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new ListStationAdapter(this,dataList);
+        button = findViewById(R.id.fab_location_search);
+        adapter = new ListStationAdapter(this,dataList,button);
         recyclerView.setAdapter(adapter);
-        this.findViewById(R.id.fab_location_search).setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Mylocation.class);

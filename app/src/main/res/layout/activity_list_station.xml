@@ -38,7 +38,6 @@
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"
                 android:background="@drawable/card_4"/>
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_location_search"
                 android:layout_width="wrap_content"
@@ -46,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:tint="@android:color/white"
                 app:backgroundTint="#e75748"
-                app:srcCompat="@drawable/ic_my_location" />
+                app:srcCompat="@drawable/ic_my_location"
+                android:visibility="invisible"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

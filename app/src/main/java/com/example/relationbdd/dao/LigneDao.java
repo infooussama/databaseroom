@@ -30,6 +30,9 @@ public interface LigneDao {
     @Query("SELECT * FROM LigneDB")
     List<LigneDB> getLigneDbs();
 
+    @Query("DELETE FROM LigneDB WHERE ltype=:type")
+    void removeLigneTelepherique(String type);
+
     @Query("SELECT * FROM LigneDB WHERE ltype NOT LIKE :p")
     List<LigneDB> getLigneDbsWithoutP(String p);
 

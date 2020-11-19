@@ -35,11 +35,18 @@ public class Acs extends AppCompatActivity{
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
     public static double temps = 0;
-    public static double evaporation  = 0.542637634868853;
-    public static double phormoneinitial  =  0.08861821851041004;
-
-    public Ant calcule(String depart,String arriver){
+    public static double evaporation;
+    public static double phormoneinitial;
+    public static double alpha;
+    public static double beta;
+    public Ant calcule(String depart,String arriver,String alpha,String beta, String phormonelvl,String evap,String iteration,String numant){
+            this.phormoneinitial = Double.parseDouble(phormonelvl);
+            this.evaporation = Double.parseDouble(evap);
+            this.alpha=Double.parseDouble(alpha);
+            this.beta=Double.parseDouble(beta);
             roomDB = RoomDB.getInstance(this);
+            int it = Integer.parseInt(iteration);
+            int num = Integer.parseInt(numant);
             fullStationDao = roomDB.fullStationDao();
             ligneDao = roomDB.ligneDao();
             lignes = ligneDao.getLigneDbs();
@@ -58,11 +65,11 @@ public class Acs extends AppCompatActivity{
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 10000;
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < it; i++) {
                 Ant bestItAnt = null;
                 double bestItAntCout = 999;
                 ants = new ArrayList<>();
-                for (int j = 0; j < 7; j++) {
+                for (int j = 0; j < num; j++) {
                     ants.add(new Ant(stations,a,b));
                     ants.get(j).walk();
                     if (bestItAntCout > ants.get(j).cout) {
@@ -83,6 +90,13 @@ public class Acs extends AppCompatActivity{
             }
             temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
             Log.e("temps_d'execution",""+temps);
+            List<LigneDB> ligneDBS = bestAnt.getSolutionLigne();
+            for(LigneDB ligneDB : ligneDBS){
+                int i = ligneDB.getPhormone_index();
+                Log.e("phormone_lvl puissance alpha",""+Math.pow(phormoneLevel[i],Ant.alpha));
+                Log.e("phormone_lvl puissance beta",""+Math.pow(phormoneLevel[i],Ant.beta));
+            }
+
             return bestAnt;
     }
     public void updatePheromone(Ant bestAnt,List<LigneDB> ligneDBS) {
@@ -137,6 +151,7 @@ public class Acs extends AppCompatActivity{
                 * Math.sin(dLon / 2);
         double c = 2 * Math.asin(Math.sqrt(a));
         double valueResult = Radius * c;
-        return valueResult;
+        return valueResult ;
     }
+
 }

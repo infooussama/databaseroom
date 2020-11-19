@@ -79,6 +79,25 @@ public class MainActivity extends AppCompatActivity{
             insertLigneAndCrossRef();
             insertTransfert();
         }
+        /*fullStationDao.removeFyllStationTelepherique("Téléphérique");
+        ligneDao.removeLigneTelepherique("L");*/
+        List<FullStation> tram = fullStationDao.getLineFullstationsWithTransfers("T1600T1A");
+        List<FullStation> metroL1 = fullStationDao.getLineFullstationsWithTransfers("M160701A");
+        List<FullStation> metroL1Bis = fullStationDao.getLineFullstationsWithTransfers("M161801A");
+
+        for (FullStation fullStation : tram){
+            Log.e("tram",""+fullStation.getStationDB().getSname());
+        }
+
+        for (FullStation fullStation : metroL1){
+            Log.e("metroL1",""+fullStation.getStationDB().getSname());
+        }
+
+        for (FullStation fullStation : metroL1Bis){
+            Log.e("metroL1Bis",""+fullStation.getStationDB().getSname());
+        }
+
+
         /*Graphf graphf = new Graphf();
         List<LigneDB> ligneDBS = graphf.graph();
 
@@ -277,6 +296,7 @@ public class MainActivity extends AppCompatActivity{
     public void insertTransfert(){
         for (int i=0;i<fullData.getFull_stations().size();i++){
             for (int j=0;j<fullData.getFull_stations().get(i).getTransfers().size();j++){
+                fullStationDao.updateFullstationTransfert(true,fullData.getFull_stations().get(i).getScode());
                 LigneDB ligneDB = new LigneDB("P",
                         "Deplacement a pied " +fullData.getFull_stations().get(i).getSname()+"--"+fullData.getFull_stations().get(i).getTransfers().get(j).getSname(),
                         fullData.getFull_stations().get(i).getScode(),

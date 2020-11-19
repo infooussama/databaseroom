@@ -25,6 +25,12 @@ public interface FullStationDao {
     @Query("SELECT * FROM FullStation")
     List<FullStation> getAllStations();
 
+    @Query("DELETE FROM FullStation WHERE stype=:type")
+    void removeFyllStationTelepherique(String type);
+
+    @Query("UPDATE FullStation SET hasTrransfer=:hastransfer WHERE scode = :scode")
+    void updateFullstationTransfert(boolean hastransfer, String scode);
+
     @Query("SELECT * FROM [FullStation] WHERE stype =:bus")
     public List<FullStation> getFullStationsBus(String bus);
 
@@ -41,6 +47,8 @@ public interface FullStationDao {
     @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid")
     public List<FullStation> getLineFullstations(String lid);
 
+    @Query("SELECT * FROM FullStation INNER JOIN FullStationLigneDBCrossRef ON FullStation.scode = FullStationLigneDBCrossRef.scode WHERE FullStationLigneDBCrossRef.lid=:lid AND FullStation.hasTrransfer=1")
+    public List<FullStation> getLineFullstationsWithTransfers(String lid);
 
     @Query("SELECT COUNT(*) FROM FullStation")
     public int getCountFullstations();

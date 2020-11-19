@@ -12,6 +12,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import java.util.List;
 
 public class CalculeItineraire extends AppCompatActivity{
     RelativeLayout depart,destination;
+    EditText alpha,beta,phormonelvl,evaporation,iteration,numeroant;
     TextView departText, destionationText, time;
     Button calcule,show_route;
     LinearLayoutManager linearLayoutManager;
@@ -52,11 +54,18 @@ public class CalculeItineraire extends AppCompatActivity{
         depart = findViewById(R.id.depart);
         destination = findViewById(R.id.destination);
         destionationText = findViewById(R.id.destinationtext);
+        alpha = findViewById(R.id.alphac);
+        beta = findViewById(R.id.beta);
+        phormonelvl = findViewById(R.id.phormonelvl);
+        evaporation = findViewById(R.id.evaporation);
+        iteration = findViewById(R.id.iteration);
+        numeroant = findViewById(R.id.numeroant);
         departText = findViewById(R.id.departtext);
         calcule = findViewById(R.id.search);
         show_route = findViewById(R.id.show_route);
         swap = findViewById(R.id.swap);
         time = findViewById(R.id.time);
+        final LoadingDialog loadingDialog = new LoadingDialog(CalculeItineraire.this);
         show_route.setEnabled(false);
         show_route.setBackgroundColor(Color.parseColor("#EEEEEE"));
         calcule.setEnabled(false);
@@ -67,15 +76,10 @@ public class CalculeItineraire extends AppCompatActivity{
         namedes = intent.getStringExtra("station_name");
         double lat = intent.getDoubleExtra("station_lat",0);
         double lon = intent.getDoubleExtra("station_lon",0);
-        /*String s = intent.getStringExtra("marker");
-        FullStation fullStation = fullStationDao.getFullStations(s);
-        destionationText.setText(namedes);
-        destionationText.setText(fullStation.getScode());*/
         destionationText.setText(namedes);
         depart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(CalculeItineraire.this, ListStation.class);
                 intent.putExtra("code",1);
                 CalculeItineraire.this.startActivityForResult(intent, 0);
@@ -87,14 +91,21 @@ public class CalculeItineraire extends AppCompatActivity{
         calcule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                loadingDialog.startLoadingDialog();
+                String s = alpha.getText().toString();
+                String s1 =beta.getText().toString();
+                String s2 = phormonelvl.getText().toString();
+                String s3 = evaporation.getText().toString();
+                String s4 = iteration.getText().toString();
+                String s5 = numeroant.getText().toString();
                 Acs acs = new Acs();
-                ant = acs.calcule(codea,coded);
+                ant = acs.calcule(codea,coded,s,s1,s2,s3,s4,s5);
                 if(ant!=null){
+                    loadingDialog.dismissDialog();
                     show_route.setBackgroundColor(Color.parseColor("#E75748"));
                     show_route.setEnabled(true);
                 }
-                time.setText(""+Acs.temps+"--------"+ant.getId());
+                time.setText(""+Acs.temps+"--------"+ant.getId()+"-----distance-----"+ant.dis+"------prixTotal-----"+ant.prixTotal);
                 List<LigneDB> ligneDBS = ant.getSolutionLigne();
                 recyclerView = findViewById(R.id.recycler_view);
                 linearLayoutManager = new LinearLayoutManager(v.getContext());
@@ -117,11 +128,11 @@ public class CalculeItineraire extends AppCompatActivity{
         swap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                destionationText.setText(name);
-                departText.setText(namedes);
-                String tmp = codea;
-                codea = coded;
-                coded = tmp;
+                String tmp = coded;
+                coded = codea;
+                codea = tmp;
+                destionationText.setText(namedes);
+                departText.setText(name);
             }
         });
 

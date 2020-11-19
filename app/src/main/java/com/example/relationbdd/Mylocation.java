@@ -96,7 +96,6 @@ public class Mylocation extends AppCompatActivity  implements PermissionsListene
         mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-
                 Intent intent = new Intent(Mylocation.this,CalculeItineraire.class);
                 intent.putExtra("marker",marker.getTitle());
                 startActivity(intent);
