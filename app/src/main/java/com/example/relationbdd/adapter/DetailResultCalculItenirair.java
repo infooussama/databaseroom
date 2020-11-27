@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.relationbdd.R;
 import com.example.relationbdd.database.RoomDB;
+import com.example.relationbdd.model.FullStation;
 import com.example.relationbdd.model.LigneAndFullStationArriver;
 import com.example.relationbdd.model.LigneDB;
 
@@ -21,10 +22,12 @@ public class DetailResultCalculItenirair extends RecyclerView.Adapter<DetailResu
     private Activity context;
     private RoomDB database;
     private List<LigneDB> dataList;
+    private List<FullStation> fullStations;
 
-    public DetailResultCalculItenirair(Activity context, List<LigneDB> dataList) {
+    public DetailResultCalculItenirair(Activity context, List<LigneDB> dataList, List<FullStation> fullStations) {
         this.context = context;
         this.dataList = dataList;
+        this.fullStations = fullStations;
         notifyDataSetChanged();
     }
 
@@ -39,18 +42,35 @@ public class DetailResultCalculItenirair extends RecyclerView.Adapter<DetailResu
     @Override
     public void onBindViewHolder(@NonNull DetailResultCalculItenirair.ViewHolder holder, int position) {
         LigneDB data = dataList.get(position);
-        if(data.getLtype().equals("B")){
+        FullStation data2 = fullStations.get(position);
+        if(data.getLtype().equals("B") && data.getOp_id().equals("E")){
             database = RoomDB.getInstance(context);
             holder.textView.setText(data.getLname());
-            holder.textView2.setText(data.getOp_color());
+            holder.textView2.setText(data2.getStationDB().getSname());
             holder.op_name.setText(data.getOp_name());
             holder.lnum.setText(data.getLnum());
             holder.img.setImageResource(R.drawable.ic_bus);
         }
+        if(data.getLtype().equals("B") && data.getOp_id().equals("B")){
+            database = RoomDB.getInstance(context);
+            holder.textView.setText(data.getLname());
+            holder.textView2.setText(data2.getStationDB().getSname());
+            holder.op_name.setText(data.getOp_name());
+            holder.lnum.setText(data.getLnum());
+            holder.img.setImageResource(R.drawable.ic_bus_yellow);
+        }
+        if(data.getLtype().equals("B") && data.getOp_id().equals("O")){
+            database = RoomDB.getInstance(context);
+            holder.textView.setText(data.getLname());
+            holder.textView2.setText(data2.getStationDB().getSname());
+            holder.op_name.setText(data.getOp_name());
+            holder.lnum.setText(data.getLnum());
+            holder.img.setImageResource(R.drawable.ic_bus_orange);
+        }
         if(data.getLtype().equals("M")){
             database = RoomDB.getInstance(context);
             holder.textView.setText(data.getLname());
-            holder.textView2.setText(data.getOp_color());
+            holder.textView2.setText(data2.getStationDB().getSname());
             holder.op_name.setText(data.getOp_name());
             holder.lnum.setText(data.getLnum());
             holder.img.setImageResource(R.drawable.ic_metro);
@@ -58,7 +78,7 @@ public class DetailResultCalculItenirair extends RecyclerView.Adapter<DetailResu
         if(data.getLtype().equals("T")){
             database = RoomDB.getInstance(context);
             holder.textView.setText(data.getLname());
-            holder.textView2.setText(data.getOp_color());
+            holder.textView2.setText(data2.getStationDB().getSname());
             holder.op_name.setText(data.getOp_name());
             holder.lnum.setText(data.getLnum());
             holder.img.setImageResource(R.drawable.ic_tram);
@@ -66,15 +86,15 @@ public class DetailResultCalculItenirair extends RecyclerView.Adapter<DetailResu
         if(data.getLtype().equals("L")){
             database = RoomDB.getInstance(context);
             holder.textView.setText(data.getLname());
-            holder.textView2.setText(data.getOp_color());
+            holder.textView2.setText(data2.getStationDB().getSname());
             holder.op_name.setText(data.getOp_name());
             holder.lnum.setText(data.getLnum());
-            holder.img.setImageResource(R.drawable.ic_railway);
+            holder.img.setImageResource(R.drawable.cable_car);
         }
         if(data.getLtype().equals("P")){
             database = RoomDB.getInstance(context);
             holder.textView.setText(data.getLname());
-            holder.textView2.setText(data.getOp_color());
+            holder.textView2.setText(data2.getStationDB().getSname());
             holder.op_name.setText(data.getOp_name());
             holder.lnum.setText(data.getLnum());
             holder.img.setImageResource(R.drawable.ic_walk);

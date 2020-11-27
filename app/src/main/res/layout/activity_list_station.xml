@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Station de depart"
+            android:text="Depart"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_centerVertical="true"
@@ -34,7 +35,7 @@
                 android:layout_height="50dp"
                 android:padding="10dp"
                 android:layout_margin="10dp"
-                android:hint="Search...."
+                android:hint="Tapez le nom de la station"
                 android:textColor="#ffffff"
                 android:textColorHint="#ffffff"
                 android:background="@drawable/card_4"/>

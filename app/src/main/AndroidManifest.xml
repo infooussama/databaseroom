@@ -4,28 +4,33 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo_2_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/logo_2_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RelationBdd">
-        <activity android:name=".Mylocation"></activity>
-        <activity android:name=".ShowResultInmaps" />
-        <activity android:name=".DetailLigne" />
-        <activity android:name=".DetailTeleStation" />
-        <activity android:name=".CalculeItineraire" />
-        <activity android:name=".ListStation" />
-        <activity android:name=".DetailBusStation" />
-        <activity android:name=".DetailTramStation" />
-        <activity android:name=".DetailMetroStation" />
-        <activity android:name=".SplashScreen">
+        <activity android:name=".Mylocation"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ShowResultInmaps"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DetailLigne"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DetailTeleStation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CalculeItineraire" android:screenOrientation="portrait"/>
+        <activity android:name=".ListStation" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailBusStation" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailTramStation" android:screenOrientation="portrait"/>
+        <activity android:name=".DetailMetroStation" android:screenOrientation="portrait"/>
+        <activity android:name=".SplashScreen" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

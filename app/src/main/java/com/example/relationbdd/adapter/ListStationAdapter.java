@@ -38,13 +38,14 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
     int c=2;
     private int intentCode;
     private FloatingActionButton button;
-
-    public ListStationAdapter(Activity context, List<FullStation> dataList, FloatingActionButton button){
+    TextView textView;
+    public ListStationAdapter(Activity context, List<FullStation> dataList, FloatingActionButton button, TextView textView){
         this.context = context;
         this.dataList = dataList;
         this.filtredataList = dataList;
         this.intentCode = this.context.getIntent().getIntExtra("code", -1);
         this.button = button;
+        this.textView = textView;
         notifyDataSetChanged();
     }
     @NonNull
@@ -62,6 +63,7 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
         holder.textView.setText(data.getStationDB().getSname());
         holder.textView2.setText(data.getStationDB().getCname());
         if(intentCode == 1){
+            textView.setText("Depart");
             button.setVisibility(View.VISIBLE);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,19 +72,13 @@ public class ListStationAdapter extends RecyclerView.Adapter<ListStationAdapter.
                 //Toast.makeText(context,"ItemClicked"+data.getStationDB().getSname(),Toast.LENGTH_LONG).show();
                 if(intentCode == 0){
                     Intent intent = new Intent(context, CalculeItineraire.class);
-                    intent.putExtra("station_code",filtredataList.get(position).getScode());
-                    intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
-                    intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
-                    intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());
+                    intent.putExtra("station",filtredataList.get(position));
                     context.startActivity(intent);
                 }
                 if(intentCode == 1){
                     button.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent();
-                    intent.putExtra("station_code",filtredataList.get(position).getScode());
-                    intent.putExtra("station_name",filtredataList.get(position).getStationDB().getSname());
-                    intent.putExtra("station_lat",filtredataList.get(position).getStop_lat());
-                    intent.putExtra("station_lon",filtredataList.get(position).getStop_lon());
+                    intent.putExtra("station",filtredataList.get(position));
                     context.setResult(Activity.RESULT_OK, intent);
                     context.finish();
                 }

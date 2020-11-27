@@ -55,8 +55,8 @@ public class Graphf extends AppCompatActivity {
                 routes.add(nodes);
                 c++;
             }else {
-                index = r.nextInt(stations.size());
-                item = stations.get(index);
+                index = r.nextInt(chosenStation.size());
+                item = chosenStation.get(index);
                 chosenStation.add(item);
                 nodes.add(item);
                 routes.add(nodes);
@@ -80,7 +80,7 @@ public class Graphf extends AppCompatActivity {
                         }
                     }
                 }
-                unused = unused;
+                //unused = unused;
                 unused2 = new ArrayList<>();
                 for(int z=0;z<unused.size();z++){
                     int l;

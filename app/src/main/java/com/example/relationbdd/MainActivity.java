@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ import com.example.relationbdd.model.TransfertDB;
 import com.google.gson.Gson;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,9 +81,16 @@ public class MainActivity extends AppCompatActivity{
             insertLigneAndCrossRef();
             insertTransfert();
         }
+
+
+        List<LigneDB> ligneDBS = ligneDao.getFullStationLignes("16CCCHMVB");
+        for (LigneDB ligneDB : ligneDBS){
+            Log.e("adjacent",""+ligneDB.getLname());
+        }
+
         /*fullStationDao.removeFyllStationTelepherique("Téléphérique");
         ligneDao.removeLigneTelepherique("L");*/
-        List<FullStation> tram = fullStationDao.getLineFullstationsWithTransfers("T1600T1A");
+        /**List<FullStation> tram = fullStationDao.getLineFullstationsWithTransfers("T1600T1A");
         List<FullStation> metroL1 = fullStationDao.getLineFullstationsWithTransfers("M160701A");
         List<FullStation> metroL1Bis = fullStationDao.getLineFullstationsWithTransfers("M161801A");
 
@@ -95,12 +104,12 @@ public class MainActivity extends AppCompatActivity{
 
         for (FullStation fullStation : metroL1Bis){
             Log.e("metroL1Bis",""+fullStation.getStationDB().getSname());
-        }
+        }*/
 
 
-        /*Graphf graphf = new Graphf();
+       /** Graphf graphf = new Graphf();
         List<LigneDB> ligneDBS = graphf.graph();
-
+        Log.e("size graphe",""+ligneDBS.size());
         for (LigneDB ligneDB : ligneDBS){
             Log.e("feto",""+ligneDB.getLname());
         }*/
@@ -386,6 +395,8 @@ public class MainActivity extends AppCompatActivity{
         }
         return null;
     }
+
+
 
     // function to generate a random string of length n
 

@@ -3,11 +3,13 @@ package com.example.relationbdd;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.relationbdd.dao.FullStationDao;
@@ -96,10 +98,11 @@ public class Mylocation extends AppCompatActivity  implements PermissionsListene
         mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
-                Intent intent = new Intent(Mylocation.this,CalculeItineraire.class);
+                Intent intent = new Intent();
                 intent.putExtra("marker",marker.getTitle());
-                startActivity(intent);
-                Toast.makeText(Mylocation.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(Mylocation.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
+                Mylocation.this.setResult(Activity.RESULT_OK, intent);
+                Mylocation.this.finish();
                 return true;
             }
         });

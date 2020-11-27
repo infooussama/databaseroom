@@ -1,3 +1,4 @@
+
 package com.example.relationbdd.acs;
 
 import android.content.Intent;
@@ -31,22 +32,16 @@ public class Acs extends AppCompatActivity{
     double best;
     public static double[] phormoneLevel;
     private static final double MAX_PHEROMONE = 1;
-    private static final double MIN_PHEROMONE = 0.001;
+    private static double MIN_PHEROMONE = 0.001;
     FullStation a,b;
     public static long ACO_TOTAL_TIME = 0;
     public static double temps = 0;
-    public static double evaporation;
-    public static double phormoneinitial;
-    public static double alpha;
-    public static double beta;
-    public Ant calcule(String depart,String arriver,String alpha,String beta, String phormonelvl,String evap,String iteration,String numant){
-            this.phormoneinitial = Double.parseDouble(phormonelvl);
-            this.evaporation = Double.parseDouble(evap);
-            this.alpha=Double.parseDouble(alpha);
-            this.beta=Double.parseDouble(beta);
+    public static double evaporation = 0.85;
+    public static double phormoneinitial = 0.08;
+    public final static double alpha = 0.4;
+    public final static double beta = 0.8;
+    public Ant calcule(String depart,String arriver){
             roomDB = RoomDB.getInstance(this);
-            int it = Integer.parseInt(iteration);
-            int num = Integer.parseInt(numant);
             fullStationDao = roomDB.fullStationDao();
             ligneDao = roomDB.ligneDao();
             lignes = ligneDao.getLigneDbs();
@@ -65,11 +60,11 @@ public class Acs extends AppCompatActivity{
             ACO_TOTAL_TIME = System.currentTimeMillis();
             bestAnt = null;
             best = 10000;
-            for (int i = 0; i < it; i++) {
+            for (int i = 0; i < 80; i++) {
                 Ant bestItAnt = null;
                 double bestItAntCout = 999;
                 ants = new ArrayList<>();
-                for (int j = 0; j < num; j++) {
+                for (int j = 0; j < 6; j++) {
                     ants.add(new Ant(stations,a,b));
                     ants.get(j).walk();
                     if (bestItAntCout > ants.get(j).cout) {
@@ -77,9 +72,9 @@ public class Acs extends AppCompatActivity{
                         bestItAntCout = ants.get(j).cout;
                         List<LigneDB> solu = bestItAnt.getSolutionLigne();
                         for (LigneDB ligneDB : solu){
-                            Log.e("hamada",""+ligneDB.getLname()+"       "+ligneDB.getLtype());
+                            Log.e("solution",""+ligneDB.getLname()+"       "+ligneDB.getLtype());
                         }
-                        Log.e("hamada_value",""+bestItAntCout);
+                        Log.e("heuristique",""+bestItAntCout);
                     }
                 }
                 if (best > bestItAnt.cout) {
@@ -89,13 +84,12 @@ public class Acs extends AppCompatActivity{
                 updatePheromone(bestItAnt,lignes);
             }
             temps = System.currentTimeMillis()-ACO_TOTAL_TIME;
-            Log.e("temps_d'execution",""+temps);
-            List<LigneDB> ligneDBS = bestAnt.getSolutionLigne();
+            //Log.e("temps_d'execution",""+temps);
+            /**List<LigneDB> ligneDBS = bestAnt.getSolutionLigne();
             for(LigneDB ligneDB : ligneDBS){
                 int i = ligneDB.getPhormone_index();
-                Log.e("phormone_lvl puissance alpha",""+Math.pow(phormoneLevel[i],Ant.alpha));
-                Log.e("phormone_lvl puissance beta",""+Math.pow(phormoneLevel[i],Ant.beta));
-            }
+                //Log.e("phormone_lvl puissance alpha",""+Math.pow(phormoneLevel[i],Ant.alpha));
+            }*/
 
             return bestAnt;
     }
@@ -135,23 +129,6 @@ public class Acs extends AppCompatActivity{
 
     public double getBest() {
         return best;
-    }
-
-    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
-        int Radius = 6371;// radius of earth in Km
-        double lat1 = StartP.getLatitude();
-        double lat2 = EndP.getLatitude();
-        double lon1 = StartP.getLongitude();
-        double lon2 = EndP.getLongitude();
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2);
-        double c = 2 * Math.asin(Math.sqrt(a));
-        double valueResult = Radius * c;
-        return valueResult ;
     }
 
 }

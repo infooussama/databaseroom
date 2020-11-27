@@ -27,7 +27,7 @@ public class Ant extends AppCompatActivity implements Serializable {
     private List<FullStation> stations,visitedStation;
     private List<LigneDB> solutionLigne,visitedLigne;
     private FullStation currentStations,end,start;
-    private static final double Q_0 = 0.05;
+    public final static double Q_0 = 0.6;
     private final int id;
     private static int numAnts = 0;
     RoomDB roomDB;
@@ -38,7 +38,7 @@ public class Ant extends AppCompatActivity implements Serializable {
     public double cout;
     public double dis;
     public double prixTotal;
-    double distance;
+    double distance,distance2;
     int co=0;
     public static double alpha = Acs.alpha;
     public static double beta  = Acs.beta;
@@ -59,6 +59,8 @@ public class Ant extends AppCompatActivity implements Serializable {
         id = numAnts;
         numAnts++;
         dbs = ligneDao.getFullStationLignes(end.getScode());
+        distance = 0;
+        distance2 = 0;
         cout = 0;
         dis = 0;
         prixTotal=0;
@@ -70,6 +72,8 @@ public class Ant extends AppCompatActivity implements Serializable {
         visitedLigne = new ArrayList<>();
         visitedStation = new ArrayList<>();
         visitedStation.add(currentStations);
+        distance = 0;
+        distance2 = 0;
         prix=0;
         cout = 0;
         dis = 0;
@@ -93,6 +97,7 @@ public class Ant extends AppCompatActivity implements Serializable {
         double sum2 = 0;
         List<Double> problist = new ArrayList<>();
         List<Double> problist2 = new ArrayList<>();
+        int indiceMaxProba = 0;
         for(LigneDB e : adjacentLignes){
             int i;
             for(i = 0;i<dbs.size();i++){
@@ -129,13 +134,13 @@ public class Ant extends AppCompatActivity implements Serializable {
                 if(dbs.get(i).getLtype().equals("p")){
                     prix = 00.00;
                 }
-                //cout = cout + (distance * 0.8) + 2 + (prix * 0.2);
+                cout = cout + (distance * 1) + 2 + (prix * 0.2);
                 prixTotal = prixTotal + prix;
                 dis = dis + distance;
                 currentStations = end;
                 visitedLigne.add(e);
                 solutionLigne.add(e);
-                visitedStation.add(fullStationDao.getFullStations(e.getId_arrive()));
+                visitedStation.add(end);
                 return;
             }
 
@@ -177,6 +182,9 @@ public class Ant extends AppCompatActivity implements Serializable {
                 );
                 sum += proba;
                 problist.add(proba);
+                if(proba >= problist.get(indiceMaxProba)){
+                    indiceMaxProba = problist.size()-1;
+                }
             }
             //possibleMoves.get(possibleMoves.size() - 1).setProbability(proba);
 
@@ -192,8 +200,9 @@ public class Ant extends AppCompatActivity implements Serializable {
         }
         else{
             //List<Double> prob2 = compute_probabilitie(possibleMoves, sum);
-            next = choice(possibleMoves, problist, sum);
+            next = choice(possibleMoves, problist, sum, indiceMaxProba);
             double proba2 = 0;
+            indiceMaxProba = 0;
             if(next.getLtype().equals("M") || next.getLtype().equals("T")){
                 List<FullStation> fullstationsWithTransfers = fullStationDao.getLineFullstationsWithTransfers(next.getLid());
                 for(FullStation fullStation : fullstationsWithTransfers){
@@ -201,18 +210,22 @@ public class Ant extends AppCompatActivity implements Serializable {
                             new LatLng(end.getStop_lat(),end.getStop_lon()),
                             new LatLng(fullStation.getStop_lat(),fullStation.getStop_lon()))*0.15),beta
                     );
-                    /*Log.e("partie 1 proba",""+Acs.phormoneLevel[next.getPhormone_index()]+"-----"+(1.0/ (CalculationByDistance(
+                    /**Log.e("partie 1 proba",""+Acs.phormoneLevel[next.getPhormone_index()]+"-----"+(1.0/ (CalculationByDistance(
                             new LatLng(end.getStop_lat(),end.getStop_lon()),
                             new LatLng(fullStation.getStop_lat(),fullStation.getStop_lon())))));
+
                     Log.e("partie 2 proba",""+Math.pow(Acs.phormoneLevel[next.getPhormone_index()], alpha) +"----"
                             +Math.pow(1.0/ (CalculationByDistance(
                             new LatLng(end.getStop_lat(),end.getStop_lon()),
                             new LatLng(fullStation.getStop_lat(),fullStation.getStop_lon()))),beta
                     ));*/
+                    sum2 += proba2;
+                    problist2.add(proba2);
+                    if(proba2 >= problist2.get(indiceMaxProba)){
+                        indiceMaxProba = problist2.size()-1;
+                    }
                 }
-                sum2 += proba2;
-                problist2.add(proba2);
-                FullStation fullStationTransfert = choiceFullStation(fullstationsWithTransfers,problist2,sum2);
+                FullStation fullStationTransfert = choiceFullStation(fullstationsWithTransfers,problist2,sum2,indiceMaxProba);
                 visitedStation.add(fullStationTransfert);
                 //distance = 0;
                     if(next.getLtype().equals("T")){
@@ -225,7 +238,11 @@ public class Ant extends AppCompatActivity implements Serializable {
                                 end.getStop_lon()),
                         new LatLng(fullStationTransfert.getStop_lat(),
                                 fullStationTransfert.getStop_lon()));
-                dis = dis + distance;
+                distance2 = CalculationByDistance(new LatLng(currentStations.getStop_lat(),
+                                currentStations.getStop_lon()),
+                        new LatLng(fullStationTransfert.getStop_lat(),
+                                fullStationTransfert.getStop_lon()));
+                dis = dis + distance2;
                 prixTotal = prixTotal + prix;
                 cout = cout + (distance * 1) + 2 + (prix * 0.2);
                 currentStations = fullStationTransfert;
@@ -236,6 +253,10 @@ public class Ant extends AppCompatActivity implements Serializable {
                // distance = 0;
                 distance = CalculationByDistance(new LatLng(end.getStop_lat(),
                                 end.getStop_lon()),
+                        new LatLng(fullStation.getStop_lat(),
+                                fullStation.getStop_lon()));
+                distance2 = CalculationByDistance(new LatLng(currentStations.getStop_lat(),
+                                currentStations.getStop_lon()),
                         new LatLng(fullStation.getStop_lat(),
                                 fullStation.getStop_lon()));
                 if(next.getLtype().equals("T")){
@@ -262,9 +283,9 @@ public class Ant extends AppCompatActivity implements Serializable {
                 if(next.getLtype().equals("P")){
                     prix = 00.00;
                 }
-                dis = dis + distance;
+                dis = dis + distance2;
                 prixTotal = prixTotal + prix;
-                cout = cout + (distance * 1) + 2 + (prix * 0.8);
+                cout = cout + (distance * 1) + 2 + (prix * 0.2);
                 String s = oppositeEnd(next,currentStations);
                 currentStations = fullStationDao.getFullStations(s);
             }
@@ -289,7 +310,7 @@ public class Ant extends AppCompatActivity implements Serializable {
         }
     }
 
-    private LigneDB choice(List<LigneDB> possiblemove, List<Double> probList, double sum) {
+    private LigneDB choice(List<LigneDB> possiblemove, List<Double> probList, double sum, int indiceMax) {
         Random rnd = new Random();
         double st = rnd.nextDouble();
         double r = rnd.nextDouble();
@@ -298,7 +319,8 @@ public class Ant extends AppCompatActivity implements Serializable {
             return possiblemove.get(0);
 
         if (st < Q_0) {
-            double max = 0;
+            return possiblemove.get(indiceMax);
+            /**double max = 0;
             int indiceMax = 0;
             for(int i = 0;i<probList.size();i++){
                 if(max < probList.get(i)){
@@ -306,7 +328,7 @@ public class Ant extends AppCompatActivity implements Serializable {
                     indiceMax=i;
                 }
             }
-            return possiblemove.get(indiceMax);
+            return possiblemove.get(indiceMax);*/
         }
         double total = 0;
         for (int j = 0; j < probList.size() - 1; j++){
@@ -318,7 +340,7 @@ public class Ant extends AppCompatActivity implements Serializable {
         return possiblemove.get(possiblemove.size()-1);
     }
 
-    private FullStation choiceFullStation(List<FullStation> possiblemove, List<Double> probList2, double sum2) {
+    private FullStation choiceFullStation(List<FullStation> possiblemove, List<Double> probList2, double sum2, int indiceMax) {
         Random rnd = new Random();
         double st = rnd.nextDouble();
         double r = rnd.nextDouble();
@@ -327,7 +349,8 @@ public class Ant extends AppCompatActivity implements Serializable {
             return possiblemove.get(0);
 
         if (st < Q_0) {
-            double max = 0;
+            return possiblemove.get(indiceMax);
+            /**double max = 0;
             int indiceMax = 0;
             for(int i = 0;i<probList2.size();i++){
                 if(max < probList2.get(i)){
@@ -335,7 +358,7 @@ public class Ant extends AppCompatActivity implements Serializable {
                     indiceMax=i;
                 }
             }
-            return possiblemove.get(indiceMax);
+            return possiblemove.get(indiceMax);*/
         }
         double total = 0;
         for (int j = 0; j < probList2.size() - 1; j++){
@@ -362,7 +385,12 @@ public class Ant extends AppCompatActivity implements Serializable {
                 * Math.sin(dLon / 2);
         double c = 2 * Math.asin(Math.sqrt(a));
         double valueResult = Radius * c;
-        return valueResult ;
+        double km = valueResult / 1;
+        //DecimalFormat newFormat = new DecimalFormat("####");
+        //int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+       // int meterInDec = Integer.valueOf(newFormat.format(meter));
+        return meter ;
     }
     public List<LigneDB> getSolutionLigne() {
         return solutionLigne;

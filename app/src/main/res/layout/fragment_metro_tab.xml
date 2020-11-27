@@ -17,7 +17,7 @@
             android:layout_height="50dp"
             android:padding="10dp"
             android:layout_margin="10dp"
-            android:hint="Search...."
+            android:hint="Tapez le nom de la station"
             android:textColor="#ffffff"
             android:textColorHint="#ffffff"
             android:background="@drawable/card_4"/>

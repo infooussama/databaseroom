@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
-    android:layout_height="500dp"
+    android:layout_height="350dp"
     android:orientation="vertical"
     android:background="#343437"
     android:layout_gravity="center"
@@ -19,37 +19,6 @@
     android:textAlignment="center"
     android:padding="8dp"/>
 
-    <RelativeLayout
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/card_5">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio"
-            android:text="satisfait"
-            android:textColor="#ffffff"
-            android:checked="true"
-            android:buttonTint="#ffffff"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="320dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/card_5">
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radio2"
-            android:textColor="#ffffff"
-            android:text="insatisfait "
-            android:buttonTint="#ffffff"/>
-    </RelativeLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,46 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="5dp">
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:hint="Nom"
-            android:textColor="#000000"
-            android:textColorHint="#000000"
-            android:background="@drawable/card_2"/>
-    </RelativeLayout>
+        android:layout_marginTop="20dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp">
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:layout_margin="10dp"
-            android:hint="Email"
-            android:textColor="#000000"
-            android:textColorHint="#000000"
-            android:background="@drawable/card_2"/>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp">
         <EditText
             android:id="@+id/commentaire"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="50dp"
             android:padding="10dp"
             android:layout_margin="10dp"
             android:hint="Commentaire"
@@ -113,7 +49,7 @@
 
     </RelativeLayout>
         <Button
-            android:id="@+id/search"
+            android:id="@+id/send"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/destination"
             android:layout_width="300dp"

@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="250dp"
         android:background="#343437">
 
         <RelativeLayout
@@ -62,110 +62,29 @@
             android:text="Choisissez votre destination"
             android:textSize="17sp"/>
     </RelativeLayout>
-        <LinearLayout
-            android:id="@+id/alpha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/destination">
-            <EditText
-                android:id="@+id/alphac"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="Alpha"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-            <EditText
-                android:id="@+id/beta"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="Beta"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/phormone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/alpha">
-
-            <EditText
-                android:id="@+id/phormonelvl"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="Phormone lvl"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-            <EditText
-                android:id="@+id/evaporation"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="evaporation"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ant"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/phormone">
-
-            <EditText
-                android:id="@+id/iteration"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="iteration"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-            <EditText
-                android:id="@+id/numeroant"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                android:hint="numero ant"
-                android:textColor="#ffffff"
-                android:textColorHint="#ffffff"
-                android:background="@drawable/card_5"/>
-
-        </LinearLayout>
         <Button
             android:id="@+id/search"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/ant"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/destination"
             android:layout_centerHorizontal="true"
             android:backgroundTint="#e75748"
             android:text="Recherche"
             android:textColor="#FFFFFF"
             />
+        <Button
+            android:id="@+id/search2"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/search"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#e75748"
+            android:text="Recherche2"
+            android:textColor="#FFFFFF"
+            />
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/show_route"
@@ -174,17 +93,76 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:backgroundTint="#e75748"
-        android:text="show in maps"
+        android:text="afficher resultat dans la map"
         android:textColor="#FFFFFF"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="370dp"
         android:id="@+id/recycler_view"
         android:layout_marginTop="8dp"
         tools:listitem="@layout/list_row_main"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/prixText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:text="Prix : "
+            android:visibility="invisible"
+            android:textColor="#000000"
+            android:textStyle="bold"/>
 
+        <TextView
+            android:id="@+id/prix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#e75748"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/distanceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="100dp"
+            android:text="distance en km :"
+            android:visibility="invisible"
+            android:textColor="#000000"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#e75748"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/report"
+        android:visibility="visible"
+        android:layout_below="@+id/time"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#e75748"
+        android:text="evaluer chemain"
+        android:textColor="#FFFFFF"
+        />
 
 </LinearLayout>
